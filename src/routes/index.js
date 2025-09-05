@@ -3,6 +3,6 @@ import companyRoutes from "./companyRoutes.js";
 
 const router = Router();
 
-router.use('/company', companyRoutes);
+router.use("/company", companyRoutes);
 
 export default router;
