@@ -16,5 +16,5 @@ app.use("/api", router);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-  console.log(`The server is running on port ${process.env.PORT}`);
+  console.log(`The server is running on port ${process.env.DB_PORT}`);
 });
