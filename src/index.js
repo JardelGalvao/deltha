@@ -4,6 +4,7 @@ import router from "./routes/index.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 dotenv.config();
+const PORT = 3000;
 
 const app = express();
 
@@ -15,6 +16,6 @@ app.use("/api", router);
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
-  console.log(`The server is running on port ${process.env.DB_PORT}`);
+app.listen(PORT, () => {
+  console.log(`The server is running on port ${PORT}`);
 });
