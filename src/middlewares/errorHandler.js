@@ -2,9 +2,9 @@ const errorHandler = (err, req, res, next) => {
   console.error(err);
 
   // Handle PostgreSQL unique constraint error
-  if (err.code === '23505') {
+  if (err.code === "23505") {
     return res.status(409).json({
-      error: 'Duplicate key error: an organization with this ID already exists.'
+      error: "Duplicate key error: an organization with this ID already exists."
     });
   }
 
