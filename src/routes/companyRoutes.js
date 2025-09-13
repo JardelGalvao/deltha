@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getCompaniesController, createCompanyController } from "../controllers/company.controller.js";
+import { getCompaniesController, createCompanyController } from "../controllers/companyController.js";
 import { companyValidate } from "../middlewares/validateCompanyMiddleware.js";
-import { companySchema } from "../schema/company.schema.js";
+import { companySchema } from "../schema/companySchema.js";
 
 const router = Router();
 
