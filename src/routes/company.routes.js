@@ -6,7 +6,7 @@ import { companySchema } from "../schema/company.schema.js";
 const router = Router();
 
 router.get("/", companyRoutes.findCompanies);
-router.get("/:id", companyRoutes.findCompany);
+router.get("/", companyRoutes.findCompany);
 router.post("/", companyValidate(companySchema), companyRoutes.createCompany);
 
 export default router;

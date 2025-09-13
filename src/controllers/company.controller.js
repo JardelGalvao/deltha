@@ -2,7 +2,8 @@ import * as companyService from "../services/company.service.js";
 
 export const findCompanies = async (req, res, next) => {
   try {
-    const companies = await companyService.finAllCompanies();
+    const page = req.params.page;
+    const companies = await companyService.finAllCompanies(page);
     res.json(companies);
   } catch (err) {
     next(err);

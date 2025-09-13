@@ -1,8 +1,9 @@
 import pool from "../../config/database.js";
 
-export const findAll = async () => {
-  const query = "SELECT * FROM DELTHA.EMPRESAS;"
-  const companies = await pool.query(query);
+export const findAll = async (pageSize, offset) => {
+  const query = "SELECT * FROM DELTHA.EMPRESAS LIMIT $1 OFFSET $2;"
+  const values = [pageSize, offset]
+  const companies = await pool.query(query, values);
   return companies;
 }
 
