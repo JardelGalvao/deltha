@@ -1,4 +1,4 @@
-import * as companyRepository from "../repository/companyRepository.js";
+import * as companyRepository from "../repository/company.repository.js";
 
 export const finAllCompanies = async () => {
   const companies = await companyRepository.findAll();

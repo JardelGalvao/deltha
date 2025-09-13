@@ -1,7 +1,7 @@
 import { Router } from "express";
-import * as companyRoutes from "../controllers/companyController.js";
+import * as companyRoutes from "../controllers/company.controller.js";
 import { companyValidate } from "../middlewares/validateCompanyMiddleware.js";
-import { companySchema } from "../schema/companySchema.js";
+import { companySchema } from "../schema/company.schema.js";
 
 const router = Router();
 

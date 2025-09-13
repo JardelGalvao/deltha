@@ -1,4 +1,4 @@
-import * as companyService from "../services/companyService.js";
+import * as companyService from "../services/company.service.js";
 
 export const findCompanies = async (req, res, next) => {
   try {
