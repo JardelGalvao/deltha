@@ -1,12 +1,19 @@
 import pool from "../../config/database.js";
 
-export const getCompanyRepository = async () => {
-  const query = "SELECT * FROM deltha.empresas;"
+export const findAll = async () => {
+  const query = "SELECT * FROM DELTHA.EMPRESAS;"
   const companies = await pool.query(query);
   return companies;
 }
 
-export const createCompanyRepository = async(companyData) => {
+export const findById = async (id) => {
+  const query = "SELECT * FROM DELTHA.EMPRESAS WHERE CODIGO_EMPRESA = $1"
+  const values = [id];
+  const company = await pool.query(query, values);
+  return company;
+}
+
+export const create = async(companyData) => {
   const values = [
     companyData.tipo_inscricao,
     companyData.inscricao,

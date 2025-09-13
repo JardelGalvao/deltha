@@ -1,18 +1,28 @@
-import { getCompaniesService, createCompanyService } from "../services/companyService.js";
+import * as companyService from "../services/companyService.js";
 
-export const getCompaniesController = async (req, res, next) => {
+export const findCompanies = async (req, res, next) => {
   try {
-    const companies = await getCompaniesService();
+    const companies = await companyService.finAllCompanies();
     res.json(companies);
   } catch (err) {
     next(err);
   };
 };
 
-export const createCompanyController = async (req, res, next) => {
+export const findCompany = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const company = await companyService.findCompany(id);
+    res.json(company);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createCompany = async (req, res, next) => {
   try {
     const companyData = req.body;
-    const company = await createCompanyService(companyData);
+    const company = await companyService.createCompany(companyData);
     res.json(company);
   } catch (err) {
     next(err);
