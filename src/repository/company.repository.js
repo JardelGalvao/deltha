@@ -14,8 +14,11 @@ export const findById = async (id) => {
   return company;
 };
 
-export const findByName = async (name) => {
-  const query = "SELECT * FROM DELTHA.EMPRESAS WHERE NOME LIKE = $1";
+export const findByInscription = async (inscription) => {
+  const query = "SELECT * FROM DELTHA.EMPRESAS WHERE INSCRICAO LIKE $1";
+  const values = [inscription];
+  const company = await pool.query(query, values);
+  return company;
 };
 
 export const create = async (companyData) => {
