@@ -15,5 +15,5 @@ export const companySchema = z.object({
   codigo_municipio: z.number().optional(),
   ddd: z.string().max(3, "DDD do telefone deve conter no máximo 3 caracteres").optional(),
   telefone: z.string().max(14, "Telefone deve conter no máximo 14 caracteres").optional(),
-  email: z.string().email("Formato de e-mail inválido"),
+  email: z.string().email("Formato de e-mail inválido")
 });
