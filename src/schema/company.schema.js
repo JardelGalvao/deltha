@@ -1,29 +1,29 @@
 import { z } from "zod";
 
 export const companySchema = z.object({
-  tipo_inscricao: z.number().int().refine((val) => val === 1 || val === 2, {
-    message: "O tipo de inscrição deve ser 1 ou 2",
+  tax_id_type: z.number().int().refine((val) => val === 1 || val === 2, {
+    message: "The Tax ID type must be 1 or 2",
   }),
-  inscricao: z.string(),
-  razao_social: z.string().max(255, "Razão social deve conter no máximo 255 caracteres"),
-  nome: z.string().max(255, "Nome deve conter no máximo 255 caracteres").optional(),
-  endereco: z.string().max(40, "Endereco deve conter no máximo 40 caracteres").optional(),
-  numero_endereco: z.number().optional(),
-  complemento_endereco: z.string().max(30, "Complemento endereco deve conter no máximo 30 caracteres").optional(),
-  cep: z.string().max(8, "CEP deve conter no máximo 8 caracteres").optional(),
-  bairro: z.string().max(60, "Bairro deve conter no máximo 60 caracteres").optional(),
-  codigo_municipio: z.number().optional(),
-  ddd: z.string().max(3, "DDD do telefone deve conter no máximo 3 caracteres").optional(),
-  telefone: z.string().max(14, "Telefone deve conter no máximo 14 caracteres").optional(),
-  email: z.string().email("Formato de e-mail inválido")
+  tax_id: z.string(),
+  corporate_name: z.string().max(255, "Corporate name must be at most 255 characters"),
+  name: z.string().max(255, "Name must be at most 255 characters").optional(),
+  address: z.string().max(40, "Address must be at most 40 characters").optional(),
+  address_number: z.number().optional(),
+  address_complement: z.string().max(30, "Address complement must be at most 30 characters").optional(),
+  postal_code: z.string().max(8, "Postal code must be at most 8 characters").optional(),
+  neighborhood: z.string().max(60, "Neighborhood must be at most 60 characters").optional(),
+  municipality_code: z.number().optional(),
+  area_code: z.string().max(3, "Phone area code must be at most 3 characters").optional(),
+  phone: z.string().max(14, "Phone must be at most 14 characters").optional(),
+  email: z.string().email("Invalid email format").optional(),
 }).refine((data) => {
-  if (data.tipo_inscricao === 1) {
-    return data.inscricao.length === 14;
-  } else if (data.tipo_inscricao === 2) {
-    return data.inscricao.length === 11;
+  if (data.tax_id_type === 1) {
+    return data.tax_id.length === 14;
+  } else if (data.tax_id_type === 2) {
+    return data.v.length === 11;
   }
   return false;
 }, {
-  message: "Comprimento inválido da inscrição para o tipo de inscrição fornecido",
-  path: ["inscricao"],
+  message: "Invalid registration length for the provided registration type",
+  path: ["registration"],
 });

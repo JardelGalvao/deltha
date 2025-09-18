@@ -12,7 +12,7 @@ export const findCompanies = async (req, res, next) => {
 
 export const findCompany = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const company = await companyService.findCompany(id);
     res.json(company);
   } catch (err) {
@@ -29,3 +29,10 @@ export const createCompany = async (req, res, next) => {
     next(err);
   };
 };
+
+export const updateCompany = async (req, res, bext) => {
+  console.log("Chegou no controller")
+  const companyData = req.body;
+  await companyService.updateCompany(companyData);
+  res.json(companyData);
+}

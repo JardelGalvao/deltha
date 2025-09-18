@@ -12,7 +12,7 @@ export const findCompany = async (id) => {
   const company = await companyRepository.findById(id);
 
   if (company.rowCount === 0) {
-    const error = new Error("Empresa não encontrada.");
+    const error = new Error("Company not found.");
     error.statusCode = 400;
     throw error;
   }
@@ -20,17 +20,18 @@ export const findCompany = async (id) => {
 };
 
 export const createCompany = async (companyData) => {
-  const companyInscription = companyData.inscricao;
-  const companyByInscription = await companyRepository.findByInscription(companyInscription);
-
-  if (companyByInscription.rows.length > 0) {
-    const error = new Error("Já existe uma empresa cadastrada com essa inscrição");
+  const companyTaxId = companyData.tax_id;
+  const companyByTaxId = await companyRepository.findByTaxId(companyTaxId);
+  if (companyByTaxId.rows.length > 0) {
+    const error = new Error("There is already a company registered with this inscription.");
     error.statusCode = 409;
     throw error;
   }
 
-
-
   const company = await companyRepository.create(companyData);
   return company.rows;
+};
+
+export const updateCompany = async (companyData) => {
+  await companyRepository.update(companyData);
 };

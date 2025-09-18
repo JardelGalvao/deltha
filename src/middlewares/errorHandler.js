@@ -8,20 +8,18 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Handle company cannot be find!
+  // Handle error 400
   if (err.statusCode === 400) {
     return res.status(400).json({
       error: err.message
     });
   }
 
-  // Handle company already exists
+  // Handle error 409
   if (err.statusCode === 409){
     return res.status(409).json({
       error: err.message
-    });
-
-    
+    });  
   }
 
   // Default fallback

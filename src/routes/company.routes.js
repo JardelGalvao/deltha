@@ -1,12 +1,13 @@
 import { Router } from "express";
-import * as companyRoutes from "../controllers/company.controller.js";
-import { companyValidate } from "../middlewares/validateCompanyMiddleware.js";
+import * as companyController from "../controllers/company.controller.js";
+import { companyValidate } from "../middlewares/validateCompany.middleware.js";
 import { companySchema } from "../schema/company.schema.js";
 
 const router = Router();
 
-router.get("/", companyRoutes.findCompanies);
-router.get("/", companyRoutes.findCompany);
-router.post("/", companyValidate(companySchema), companyRoutes.createCompany);
+router.get("/", companyController.findCompanies);
+router.get("/:id", companyController.findCompany);
+router.post("/", companyValidate(companySchema), companyController.createCompany);
+router.put("/", companyValidate(companySchema), companyController.updateCompany);
 
 export default router;
