@@ -21,7 +21,9 @@ export const findCompany = async (id) => {
 
 export const createCompany = async (companyData) => {
   const companyTaxId = companyData.tax_id;
+  const municipalitiesCode = companyData.municipality_code;
   const companyByTaxId = await companyRepository.findByTaxId(companyTaxId);
+
   if (companyByTaxId.rows.length > 0) {
     const error = new Error("There is already a company registered with this inscription.");
     error.statusCode = 409;

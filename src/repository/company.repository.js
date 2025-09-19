@@ -1,4 +1,5 @@
 import pool from "../../config/database.js";
+import * as municipalitiesRepository from './municipalities.repository.js';
 
 export const findAll = async (pageSize, offset) => {
   const query = "SELECT * FROM DELTHA.COMPANIES LIMIT $1 OFFSET $2;";
@@ -38,8 +39,8 @@ export const update = async(companyData) => {
   const fields = Object.keys(companyData);
   const values = Object.values(companyData);
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
-  const sql = `UPDATE DELTHA.EMPRESAS SET ${setClauses} WHERE CODIGO_EMPRESA = $${fields.length + 1} RETURNING *`;
+  const query = `UPDATE DELTHA.COMPANIES SET ${setClauses} WHERE COMPANY_ID = $${fields.length + 1} RETURNING *`;
   const params = [...values, 16];
-  const result = await pool.query(sql, params);
+  const result = await pool.query(query, params);
   return result.rows[0];
 };
