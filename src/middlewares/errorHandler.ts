@@ -11,7 +11,6 @@ const errorHandler = (error: HttpError | Error, req: Request, res: Response, nex
     });
   }
   
-
   // Handle error 400
   if ('code' in error && error.code === '400') {
     return res.status(400).json({
@@ -28,8 +27,8 @@ const errorHandler = (error: HttpError | Error, req: Request, res: Response, nex
 
   // Default fallback
   return res.status(500).json({
-    error: "Internal Server Error.",
+    error: error.message,
   });
 };
-
+//"Internal Server Error."
 export default errorHandler;

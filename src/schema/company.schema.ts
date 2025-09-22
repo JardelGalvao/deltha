@@ -25,7 +25,7 @@ export const CompanySchema = z.object({
   return false;
 }, {
   message: "Invalid registration length for the provided registration type",
-  path: ["registration"],
+  path: ["tax_id"],
 });
 
 export type Company = z.infer<typeof CompanySchema>;

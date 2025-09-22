@@ -1,17 +1,16 @@
 import pool from "@/config/database"
 import { Company } from "@schema/company.schema.js";
 
-import * as municipalitiesRepository from './municipalities.repository.js';
-
 export const findAll = async (pageSize: number, offset: number) => {
   const query = "SELECT * FROM DELTHA.COMPANIES LIMIT $1 OFFSET $2;";
   const values = [pageSize, offset];
   const companies = await pool.query(query, values);
+  
   return companies;
 };
 
 export const findById = async (id: number) => {
-  const query = "SELECT * FROM DELTHA.COMPANIES WHERE CODIGO_EMPRESA = $1";
+  const query = "SELECT * FROM DELTHA.COMPANIES WHERE COMPANY_CODE = $1";
   const values = [id];
   const company = await pool.query(query, values);
   return company;
