@@ -1,21 +1,23 @@
-import pool from "../../config/database.js";
+import pool from "@/config/database"
+import { Company } from "@schema/company.schema.js";
+
 import * as municipalitiesRepository from './municipalities.repository.js';
 
-export const findAll = async (pageSize, offset) => {
+export const findAll = async (pageSize: number, offset: number) => {
   const query = "SELECT * FROM DELTHA.COMPANIES LIMIT $1 OFFSET $2;";
   const values = [pageSize, offset];
   const companies = await pool.query(query, values);
   return companies;
 };
 
-export const findById = async (id) => {
+export const findById = async (id: number) => {
   const query = "SELECT * FROM DELTHA.COMPANIES WHERE CODIGO_EMPRESA = $1";
   const values = [id];
   const company = await pool.query(query, values);
   return company;
 };
 
-export const findByTaxId = async (tax_id) => {
+export const findByTaxId = async (tax_id: string) => {
   const query = "SELECT * FROM DELTHA.COMPANIES WHERE TAX_ID LIKE $1";
   const values = [tax_id];
   const company = await pool.query(query, values);
@@ -23,7 +25,7 @@ export const findByTaxId = async (tax_id) => {
   return company;
 };
 
-export const create = async (companyData) => {
+export const create = async (companyData: Company) => {
   const values = Object.values(companyData);
   const query = `
     INSERT INTO DELTHA.COMPANIES (TAX_ID_TYPE, TAX_ID, CORPORATE_NAME, NAME, ADDRESS, ADDRESS_NUMBER, ADDRESS_COMPLEMENT, POSTAL_CODE, NEIGHBORHOOD, MUNICIPALITY_CODE, AREA_CODE, PHONE, EMAIL) 
@@ -35,7 +37,7 @@ export const create = async (companyData) => {
   return company;
 };
 
-export const update = async(companyData) => {
+export const update = async(companyData: Company) => {
   const fields = Object.keys(companyData);
   const values = Object.values(companyData);
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");

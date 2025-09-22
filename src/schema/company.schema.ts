@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const companySchema = z.object({
+export const CompanySchema = z.object({
   tax_id_type: z.number().int().refine((val) => val === 1 || val === 2, {
     message: "The Tax ID type must be 1 or 2",
   }),
@@ -20,10 +20,12 @@ export const companySchema = z.object({
   if (data.tax_id_type === 1) {
     return data.tax_id.length === 14;
   } else if (data.tax_id_type === 2) {
-    return data.v.length === 11;
+    return data.tax_id.length === 11;
   }
   return false;
 }, {
   message: "Invalid registration length for the provided registration type",
   path: ["registration"],
 });
+
+export type Company = z.infer<typeof CompanySchema>;
