@@ -20,15 +20,17 @@ export const findByTaxId = async (tax_id: string) => {
   const query = "SELECT * FROM DELTHA.COMPANIES WHERE TAX_ID LIKE $1";
   const values = [tax_id];
   const company = await pool.query(query, values);
-  console.log(company)
   return company;
 };
 
 export const create = async (companyData: Company) => {
   const values = Object.values(companyData);
+  const fields = Object.keys(companyData);
+  const setColumns = fields.map((field) => `${field}`).join(", ");
+  const setValues = fields.map((value, index) => `$${index + 1}`).join(", ");
   const query = `
-    INSERT INTO DELTHA.COMPANIES (TAX_ID_TYPE, TAX_ID, CORPORATE_NAME, NAME, ADDRESS, ADDRESS_NUMBER, ADDRESS_COMPLEMENT, POSTAL_CODE, NEIGHBORHOOD, MUNICIPALITY_CODE, AREA_CODE, PHONE, EMAIL) 
-    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    INSERT INTO DELTHA.COMPANIES (${setColumns}) 
+    VALUES(${setValues})
     RETURNING COMPANY_CODE, TAX_ID, CORPORATE_NAME;
   `;
 
@@ -36,12 +38,13 @@ export const create = async (companyData: Company) => {
   return company;
 };
 
-export const update = async(companyData: Company) => {
+export const update = async(companyData: Company, id: number) => {
   const fields = Object.keys(companyData);
   const values = Object.values(companyData);
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
-  const query = `UPDATE DELTHA.COMPANIES SET ${setClauses} WHERE COMPANY_ID = $${fields.length + 1} RETURNING *`;
-  const params = [...values, 16];
+  const query = `UPDATE DELTHA.COMPANIES SET ${setClauses} WHERE COMPANY_CODE = ${id} RETURNING *`;
+  console.log(query)
+  const params = [...values];
   const result = await pool.query(query, params);
   return result.rows[0];
 };

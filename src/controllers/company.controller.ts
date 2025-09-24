@@ -4,7 +4,7 @@ import * as companyService from "@services/company.service";
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
     const page = req.params.page;
-    const companies = await companyService.finAllCompanies(page);
+    const companies = await companyService.findAllCompanies(page);
     res.json(companies);
   } catch (error) {
     next(error);
@@ -32,8 +32,10 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
 };
 
 export const updateCompany = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("Chegou no controller")
+
   const companyData = req.body;
-  await companyService.updateCompany(companyData);
+  const { id } = req.params;
+  
+  await companyService.updateCompany(companyData, parseInt(id));
   res.json(companyData);
 }
