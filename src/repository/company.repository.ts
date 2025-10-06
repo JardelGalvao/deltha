@@ -1,5 +1,5 @@
 import pool from "@/config/database"
-import { Company } from "@schema/company.schema.js";
+import { Company, CompanyUpdate } from "@schema/company.schema.js";
 
 export const findAll = async (pageSize: number, offset: number) => {
   const query = "SELECT * FROM DELTHA.COMPANIES LIMIT $1 OFFSET $2;";
@@ -38,13 +38,18 @@ export const create = async (companyData: Company) => {
   return company;
 };
 
-export const update = async(companyData: Company, id: number) => {
+export const update = async (companyData: CompanyUpdate, id: number) => {
   const fields = Object.keys(companyData);
   const values = Object.values(companyData);
+
+  if (fields.length === 0) {
+    throw new Error("No fields to update");
+  }
+
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
   const query = `UPDATE DELTHA.COMPANIES SET ${setClauses} WHERE COMPANY_CODE = ${id} RETURNING *`;
-  console.log(query)
-  const params = [...values];
-  const result = await pool.query(query, params);
+  
+  console.log(query);
+  const result = await pool.query(query, values);
   return result.rows[0];
 };
