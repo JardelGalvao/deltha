@@ -1,49 +1,21 @@
-# Node.js Backend Project
+# Deltha
 
-Este é um projeto de backend Node.js escalável e bem estruturado.
+This is a Node.js backend project I am developing for study purposes. It is a SaaS aimed at companies in the occupational health sector.
 
-## Estrutura do Projeto
+The goal of the software is to provide these companies with all the necessary tools to manage their routines in one place. Company registration, employee registration, scheduling of occupational exams, and schedule management are some of the functionalities I intend to implement in the project.
 
-```
-.env.example
-README.md
-todo.md
-src/
-├── controllers/
-├── services/
-├── models/
-├── routes/
-├── middlewares/
-├── utils/
-└── index.js
-config/
-tests/
-docs/
-```
+As I progress in my Node.js studies, I will be adding new features and improving the project.
 
-## Instalação
+# Tools Used
 
-1. Clone o repositório.
-2. Instale as dependências com `npm install` ou `yarn install`.
-3. Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente.
+- **Node.js / TypeScript**: I am using Node.js along with TypeScript for backend development. Initially, the project was being written in JavaScript, but after some research, I found that TypeScript's type system would help ensure data consistency.
 
-## Execução
+- **PostgreSQL**: I am using the PostgreSQL database for data storage. Since the application is expected to expand and store sensitive data in large quantities, I believe this is a good choice for a database. Being a relational database will assist in report generation and data query optimization.
 
-Para iniciar o servidor, execute:
+- **Zod**: Data validation is being done with Zod, a versatile and intuitive tool that provides robust data validations.
 
-```bash
-node src/index.js
-```
+Once I have an MVP of the backend, I will start the frontend development project with Angular or React. Although I already have some experience with Angular, I am considering using React in this project to get to know this framework better.
 
-## Testes
+# Observations
 
-Para executar os testes, utilize:
-
-```bash
-npm test
-```
-
-## Documentação
-
-Consulte a pasta `docs/` para mais informações sobre a API e outros aspectos do projeto.
-
+Initially, this application will not be commercialized. I am developing it solely for professional growth. However, if I see a business opportunity, there is no reason not to commercialize it.
