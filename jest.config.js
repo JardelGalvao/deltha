@@ -9,5 +9,19 @@ module.exports = {
   testMatch: [
     "**/tests/**/*.test.js"
   ],
-  setupFilesAfterEnv: ["<rootDir>/tests/setup.js"]
+  setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
+  reporters: [
+    "default",
+    [
+      "jest-html-reporter",
+      {
+        pageTitle: "Test Report",
+        outputPath: "./test-report.html",
+        includeFailureMsg: true,
+        includeConsoleLog: true,
+        theme: "defaultTheme",
+        executionTimeWarningThreshold: 5
+      }
+    ]
+  ]
 };
