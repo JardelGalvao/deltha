@@ -59,7 +59,7 @@ export const updateCompany = async (companyData: CompanyUpdate, id: number) => {
   }
 
   if(tax_id){
-      // Verify if a company with the TaxId already exists
+    // Verify if a company with the TaxId already exists
     const existingCompany = await companyRepository.findByTaxId(tax_id);
 
     if (existingCompany.rows.length > 0) {
@@ -78,3 +78,15 @@ export const updateCompany = async (companyData: CompanyUpdate, id: number) => {
   await companyRepository.update(companyData, id);
   
 };
+
+export const deleteCompany = async (id: number) => {
+  // Searching company by id
+  const company = await companyRepository.findById(id);
+
+  if (company.rowCount === 0) {
+    throw new HttpError ("Company not found.", 404);
+  }
+
+  const result = await companyRepository.remove(id);
+  
+}

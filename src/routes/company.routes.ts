@@ -9,5 +9,6 @@ router.get("/", companyController.findCompanies);
 router.get("/:id", companyController.findCompany);
 router.post("/", companyCreateValidate(CompanySchema), companyController.createCompany);
 router.put("/:id", companyUpdadteValidate(CompanyUpdateSchema), companyController.updateCompany);
+router.delete("/:id", companyController.deleteCompany);
 
 export default router;

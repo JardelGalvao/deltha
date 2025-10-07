@@ -32,10 +32,17 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
 };
 
 export const updateCompany = async (req: Request, res: Response, next: NextFunction) => {
-
   const companyData = req.body;
   const { id } = req.params;
   
   await companyService.updateCompany(companyData, parseInt(id));
   res.json(companyData);
+};
+
+export const deleteCompany = async(req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  await companyService.deleteCompany(parseInt(id));
+  res.json({
+    "Message" : "Sucess!"
+  });
 }
