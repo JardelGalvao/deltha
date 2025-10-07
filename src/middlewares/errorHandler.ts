@@ -1,11 +1,10 @@
 import HttpError from "@/errors/HttpError";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 
 const errorHandler = (
   error: HttpError | Error,
   req: Request,
   res: Response,
-  next: NextFunction 
 ) => {
   // This check should come before the more generic HttpError check.
   if ('code' in error && error.code === '23505') {

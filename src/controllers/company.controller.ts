@@ -31,7 +31,7 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
   };
 };
 
-export const updateCompany = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCompany = async (req: Request, res: Response) => {
   const companyData = req.body;
   const { id } = req.params;
   
@@ -39,7 +39,7 @@ export const updateCompany = async (req: Request, res: Response, next: NextFunct
   res.json(companyData);
 };
 
-export const deleteCompany = async(req: Request, res: Response, next: NextFunction) => {
+export const deleteCompany = async(req: Request, res: Response) => {
   const { id } = req.params;
   await companyService.deleteCompany(parseInt(id));
   res.json({

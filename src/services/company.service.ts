@@ -87,6 +87,5 @@ export const deleteCompany = async (id: number) => {
     throw new HttpError ("Company not found.", 404);
   }
 
-  const result = await companyRepository.remove(id);
-  
+  await companyRepository.remove(id);
 }
