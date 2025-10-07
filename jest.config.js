@@ -1,27 +1,28 @@
+require('dotenv').config({ path: '.env.test' });
+
 module.exports = {
-  testEnvironment: "node",
-  collectCoverageFrom: [
-    "src/**/*.js",
-    "!src/index.js"
-  ],
-  coverageDirectory: "coverage",
-  coverageReporters: ["text", "lcov", "html"],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
   testMatch: [
-    "**/tests/**/*.test.js"
+    '**/__tests__/**/*.ts',
+    '**/?(*.)+(spec|test).ts'
   ],
-  setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
-  reporters: [
-    "default",
-    [
-      "jest-html-reporter",
-      {
-        pageTitle: "Test Report",
-        outputPath: "./test-report.html",
-        includeFailureMsg: true,
-        includeConsoleLog: true,
-        theme: "defaultTheme",
-        executionTimeWarningThreshold: 5
-      }
-    ]
-  ]
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'js', 'json'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.d.ts',
+  ],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@schema/(.*)$': '<rootDir>/src/schema/$1',
+    '^@config/(.*)$': '<rootDir>/src/config/$1',
+    '^@repository/(.*)$': '<rootDir>/src/repository/$1',
+    '^@service/(.*)$': '<rootDir>/src/service/$1',
+    '^@controller/(.*)$': '<rootDir>/src/controller/$1',
+  },
 };

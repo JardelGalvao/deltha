@@ -1,4 +1,4 @@
-import pool from "@/config/database"
+import pool from "@/config/connection"
 import { Company, CompanyUpdate } from "@schema/company.schema.js";
 
 export const findAll = async (pageSize: number, offset: number) => {
@@ -33,7 +33,6 @@ export const create = async (companyData: Company) => {
     VALUES(${setValues})
     RETURNING COMPANY_CODE, TAX_ID, CORPORATE_NAME;
   `;
-
   const company = await pool.query(query, values);
   return company;
 };

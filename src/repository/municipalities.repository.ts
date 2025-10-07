@@ -1,4 +1,4 @@
-import pool from "@config/database";
+import pool from "@config/connection";
 
 export const findAll = async (pageSize: number, offset: number) => {
   const query = "SELECT * FROM DELTHA.MUNICIPALITIES LIMIT $1 OFFSET $2;";
