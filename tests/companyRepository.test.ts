@@ -1,13 +1,6 @@
 import * as companyRepository from '../src/repository/company.repository';
-import pool from "../src/config/connection";
-
-// Mock the pool module
-jest.mock("@/config/connection", () => ({
-  query: jest.fn(),
-}));
 
 describe('CompanyRepository', () => {
-  
   describe('Create', () => {
     it('Should create a new company', async () => {
       const companyData = {
@@ -25,9 +18,7 @@ describe('CompanyRepository', () => {
         phone : "1234567890",
         email : "example@example.com"
       };
-
       const result = await companyRepository.create(companyData);
-
       expect(result).toHaveProperty('company_code');
       expect(result.tax_id).toBe(companyData.tax_id);
       expect(result.corporate_name).toBe(companyData.corporate_name);

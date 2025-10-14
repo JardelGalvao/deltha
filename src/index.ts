@@ -1,11 +1,11 @@
 import express from "express";
-import dotenv from "dotenv";
 import router from "@/routes/index"
 import errorHandler from "./middlewares/errorHandler";
 
-dotenv.config();
+
 const PORT = 3000;
 const app = express();
+
 // Middleware to parse JSON
 app.use(express.json());
 // Add routes

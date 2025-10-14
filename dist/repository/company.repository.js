@@ -23,7 +23,6 @@ const findByTaxId = async (tax_id) => {
     const query = "SELECT * FROM DELTHA.COMPANIES WHERE TAX_ID LIKE $1";
     const values = [tax_id];
     const company = await database_js_1.default.query(query, values);
-    console.log(company);
     return company;
 };
 exports.findByTaxId = findByTaxId;

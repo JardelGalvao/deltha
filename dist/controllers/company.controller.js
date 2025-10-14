@@ -71,7 +71,6 @@ const createCompany = async (req, res, next) => {
 };
 exports.createCompany = createCompany;
 const updateCompany = async (req, res, next) => {
-    console.log("Chegou no controller");
     const companyData = req.body;
     await companyService.updateCompany(companyData);
     res.json(companyData);

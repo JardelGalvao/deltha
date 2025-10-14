@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-dotenv.config()
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 export interface DatabaseConfig {
   host: string;
@@ -24,7 +24,7 @@ const config: Record<string, DatabaseConfig> = {
   test: {
     host: process.env.DB_HOST!,
     port: parseInt(process.env.DB_PORT!),
-    database: process.env.DB_TEST_NAME!,
+    database: process.env.DB_NAME!,
     user: process.env.DB_USER!,
     password: process.env.DB_PASS!,
     max: 5,
