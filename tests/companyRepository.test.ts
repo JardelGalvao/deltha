@@ -1,9 +1,11 @@
 import * as companyRepository from '../src/repository/company.repository';
+import { CompanyUpdate, Company } from '../src/schema/company.schema'
 
 describe('CompanyRepository', () => {
+  
   describe('Create', () => {
     it('Should create a new company', async () => {
-      const companyData = {
+      const companyData : Company = {
         tax_id_type : 1,
         tax_id : "58913211000103",
         corporate_name : "Company test",
@@ -19,27 +21,62 @@ describe('CompanyRepository', () => {
         email : "example@example.com"
       };
       const result = await companyRepository.create(companyData);
-      expect(result).toHaveProperty('company_code');
-      expect(result.tax_id).toBe(companyData.tax_id);
-      expect(result.corporate_name).toBe(companyData.corporate_name);
+
+      expect(result.rows[0]).toHaveProperty('company_code');
+      expect(result.rows[0].tax_id).toBe(companyData.tax_id);
+      expect(result.rows[0].corporate_name).toBe(companyData.corporate_name);
     });
   });
 
-  describe('findById', () => {
+  describe('FindById', () => {
     it('Should return company when found', async () => {
-      const companyData = {
+      const companyData : Company = {
         tax_id_type : 1,
         tax_id : "58913211000103",
         corporate_name : "Company test",
       }
 
       const result = await companyRepository.create(companyData);
-      const company = await companyRepository.findById(result.company_code);
+      const company = await companyRepository.findById(result.rows[0].company_code);
       
-      expect(company).toHaveProperty('company_code');
-      expect(company.tax_id).toBe(companyData.tax_id);
-      expect(company.corporate_name).toBe(companyData.corporate_name);
+      expect(company.rows[0]).toHaveProperty('company_code');
+      expect(company.rows[0].tax_id).toBe(companyData.tax_id);
+      expect(company.rows[0].corporate_name).toBe(companyData.corporate_name);
     })
   });
+
+  describe('Update', () => {
+    it('Should update the company data', async () => {
+      const companyData: Company = {
+        tax_id_type : 1,
+        tax_id : "58913211000103",
+        corporate_name : "Company test",
+      }
+
+      const result = await companyRepository.create(companyData);
+
+      const updatedData: CompanyUpdate = {
+        corporate_name : "New corporate name",
+      };
+
+      const updatedCompany = await companyRepository.update(updatedData, result.rows[0].company_code);
+      expect(updatedCompany.rows[0].corporate_name).toBe(updatedData.corporate_name);
+    })
+  })
+
+  describe('Delete', () => {
+    it('Should delete the company', async () => {
+       const companyData: Company = {
+        tax_id_type : 1,
+        tax_id : "58913211000103",
+        corporate_name : "Company test",
+      }
+
+      const result = await companyRepository.create(companyData);
+      const deletedCompany = await companyRepository.remove(result.rows[0].company_code)
+      
+      expect(deletedCompany.rowCount).toBe(1);
+    })
+  })
 });
 

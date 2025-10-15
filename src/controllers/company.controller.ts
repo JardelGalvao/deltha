@@ -43,6 +43,6 @@ export const deleteCompany = async(req: Request, res: Response) => {
   const { id } = req.params;
   await companyService.deleteCompany(parseInt(id));
   res.json({
-    "Message" : "Sucess!"
+    "message" : "sucess!"
   });
 }

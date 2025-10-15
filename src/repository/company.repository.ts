@@ -14,14 +14,14 @@ export const findById = async (id: number) => {
   const query = "SELECT * FROM DELTHA.COMPANIES WHERE COMPANY_CODE = $1";
   const values = [id];
   const queryResult: QueryResult = await pool.query(query, values);
-  return queryResult.rows[0];
+  return queryResult;
 };
 
 export const findByTaxId = async (tax_id: string) => {
   const query = "SELECT * FROM DELTHA.COMPANIES WHERE TAX_ID LIKE $1";
   const values = [tax_id];
   const queryResult: QueryResult = await pool.query(query, values);
-  return queryResult.rows[0];
+  return queryResult;
 };
 
 export const create = async (companyData: Company) => {
@@ -35,7 +35,7 @@ export const create = async (companyData: Company) => {
     RETURNING COMPANY_CODE, TAX_ID, CORPORATE_NAME;
   `;
   const queryResult: QueryResult = await pool.query(query, values);
-  return queryResult.rows[0];
+  return queryResult;
 };
 
 export const update = async (companyData: CompanyUpdate, id: number) => {
@@ -50,11 +50,11 @@ export const update = async (companyData: CompanyUpdate, id: number) => {
   const query = `UPDATE DELTHA.COMPANIES SET ${setClauses} WHERE COMPANY_CODE = ${id} RETURNING *`;
 
   const queryResult: QueryResult = await pool.query(query, values);
-  return queryResult.rows[0];
+  return queryResult;
 };
 
 export const remove = async(id: number) => {
   const query = `DELETE FROM DELTHA.COMPANIES WHERE COMPANY_CODE = $1`;
   const queryResult: QueryResult = await pool.query(query, [id]);
-   return queryResult.rows[0];
+  return queryResult;
 };

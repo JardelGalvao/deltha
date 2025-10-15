@@ -12,7 +12,7 @@ export const findAllCompanies = async (page: number = 1) => {
 
   const companies = await companyRepository.findAll(pageSize, offset);
 
-  return companies;
+  return companies.rows;
 };
 
 // Find a Company by ID
@@ -21,10 +21,10 @@ export const findCompany = async (id: number) => {
   const company = await companyRepository.findById(id);
 
   if (company.rowCount === 0) {
-    throw new HttpError ("Company not found.", 404);
+    throw new HttpError("Company not found.", 404);
   }
 
-  return company;
+  return company.rows;
 };
 
 // Create Company
@@ -47,7 +47,7 @@ export const createCompany = async (companyData: Company) => {
 
   // Create the company
   const newCompany = await companyRepository.create(companyData);
-  return newCompany;
+  return newCompany.rows;
 };
 
 // Update Company
