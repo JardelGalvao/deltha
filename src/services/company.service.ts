@@ -1,7 +1,8 @@
 import * as companyRepository from "@repository/company.repository";
-import * as municipalityRepository from "@repository/municipalities.repository"
+import * as municipalityRepository from "@repository/municipalities.repository";
 import HttpError  from "@errors/HttpError";
 import { Company, CompanyUpdate } from "@schema/company.schema";
+import * as companyValidator from "@validators/companyValidator";
 
 // Find All companies max 10 pages
 export const findAllCompanies = async (page: number = 1) => {
@@ -30,6 +31,11 @@ export const findCompany = async (id: number) => {
 // Create Company
 export const createCompany = async (companyData: Company) => {
   const { tax_id, municipality_code } = companyData;
+
+  // Valid taxid
+  if( !companyValidator.validTaxId(tax_id) ){
+    throw new HttpError("Invalid tax_id.", 422);
+  }
 
   // Verify if a company with the TaxId already exists
   const existingCompany = await companyRepository.findByTaxId(tax_id);
