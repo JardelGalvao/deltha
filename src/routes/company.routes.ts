@@ -5,6 +5,7 @@ import { CompanySchema, CompanyUpdateSchema } from "../schema/company.schema";
 
 const router = Router();
 
+
 router.get("/", companyController.findCompanies);
 router.get("/:id", companyController.findCompany);
 router.post("/", companyCreateValidate(CompanySchema), companyController.createCompany);

@@ -20,6 +20,8 @@
       "@schema/*": ["src/schema/*"],
       "@services/*": ["src/services/*"],
       "@validators/*": ["src/validators/*"],
+      "@documentation/*": ["src/documentation/*"],
+       "@utils/*": ["src/utils/*"],
       "@/*": ["src/*"]
     }
   },

@@ -1,7 +1,6 @@
-import { z } from "zod";
+import { z } from '@utils/zod'
 
 // Creeate company Schema
-
 export const CompanySchema = z.object({
   tax_id_type: z.number().int().refine((val) => val === 1 || val === 2, {
     message: "The Tax ID type must be 1 or 2",
@@ -33,7 +32,6 @@ export const CompanySchema = z.object({
 export type Company = z.infer<typeof CompanySchema>;
 
 // Update company schema
-
 export const CompanyUpdateSchema = z.object({
   tax_id_type: z.number().int().refine((val) => val === 1 || val === 2, {
     message: "The Tax ID type must be 1 or 2",
