@@ -46,4 +46,4 @@ export const deleteCompany = async(req: Request, res: Response) => {
   res.json({
     "message" : "sucess!"
   });
-}
+};

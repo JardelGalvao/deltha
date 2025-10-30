@@ -6,7 +6,6 @@ import * as municipalities from "@modules/localization/repositories/minicipaliti
 
 // Find All companies max 10 pages
 export const findAllCompanies = async (page: number = 1) => {
-  // 1. Pagination Calculation
   const pageNumber = Math.max(page, 1);
   const pageSize = 10;
   const offset = (pageNumber - 1) * pageSize;
@@ -17,7 +16,6 @@ export const findAllCompanies = async (page: number = 1) => {
 
 // Find a Company by ID
 export const findCompany = async (id: number) => {
-  // Searching company by id
   const company = await companyRepository.findById(id);
 
   if (company.rowCount === 0) {
@@ -91,12 +89,10 @@ export const updateCompany = async (companyData: CompanyUpdateDto, id: number) =
   }
 
   await companyRepository.update(companyData, id);
-  
 };
 
 // Delete company
 export const deleteCompany = async (id: number) => {
-  // Searching company by id
   const company = await companyRepository.findById(id);
 
   if (company.rowCount === 0) {

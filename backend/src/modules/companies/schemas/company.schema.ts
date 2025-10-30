@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { municipalitySchema } from "@modules/localization/schemas/municipalitie.schema";
 
 // Constants
 const TAX_ID_TYPES = {
@@ -112,7 +111,7 @@ const companyBaseSchema = z
     email: emailSchema,
     created_at: z.date(),
     updated_at: z.date(),
-  })
+  });
 
 export const CompanySchema = z
   .object({
