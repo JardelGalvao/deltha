@@ -11,9 +11,6 @@ export interface DatabaseConfig {
   idleTimeoutMillis?: number;
 }
 
-console.log('FFFFFFFFFFFFFFFFFF')
-console.log(process.env.DATABASE_PWD)
-
 const config: Record<string, DatabaseConfig> = {
   development: {
     host: process.env.DATABASE_HOST!,

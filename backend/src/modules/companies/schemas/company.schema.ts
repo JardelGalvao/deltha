@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import { z } from "zod";
+import { municipalitySchema } from "@modules/localization/schemas/municipalitie.schema";
 
 // Constants
 const TAX_ID_TYPES = {
@@ -44,32 +45,39 @@ const taxIdTypeSchema = z
     message: VALIDATION_MESSAGES.taxIdType,
   });
 
-const taxIdSchema = z.string();
+const taxIdSchema = z
+.string()
+.trim();
 
 const emailSchema = z
   .string()
+  .trim()
   .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, VALIDATION_MESSAGES.email)
   .optional();
 
 const areaCodeSchema = z
   .string()
+  .trim()
   .length(3, VALIDATION_MESSAGES.areaCode)
   .optional();
 
 // Base company schema
-const CompanyBaseSchema = z
+const companyBaseSchema = z
   .object({
     tax_id_type: taxIdTypeSchema,
     tax_id: taxIdSchema,
     corporate_name: z
       .string({ message: VALIDATION_MESSAGES.corporateName })
+      .trim()
       .max(MAX_LENGTHS.corporateName, `Corporate name must be at most ${MAX_LENGTHS.corporateName} characters`),
     name: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.name, `Name must be at most ${MAX_LENGTHS.name} characters`)
       .optional(),
     address: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.address, `Address must be at most ${MAX_LENGTHS.address} characters`)
       .optional(),
     address_number: z
@@ -79,25 +87,45 @@ const CompanyBaseSchema = z
       .optional(),
     address_complement: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.addressComplement, `Address complement must be at most ${MAX_LENGTHS.addressComplement} characters`)
       .optional(),
     postal_code: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.postalCode, `Postal code must be at most ${MAX_LENGTHS.postalCode} characters`)
       .optional(),
     neighborhood: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.neighborhood, `Neighborhood must be at most ${MAX_LENGTHS.neighborhood} characters`)
       .optional(),
-    municipality_code: z.number().optional(),
+    municipality_code: z
+    .number()
+    .optional(),
     area_code: areaCodeSchema,
     phone: z
       .string()
+      .trim()
       .max(MAX_LENGTHS.phone, `Phone must be at most ${MAX_LENGTHS.phone} characters`)
       .optional(),
     email: emailSchema,
     created_at: z.date(),
     updated_at: z.date(),
+  })
+
+export const CompanySchema = z
+  .object({
+    company_code: z
+    .number(),
+  })
+  .extend(companyBaseSchema.shape);
+
+export const companyCreateSchema = companyBaseSchema
+  .strict()
+  .omit({ 
+    created_at: true,
+    updated_at: true,
   })
   .refine(
     (data) => validateTaxId(data.tax_id_type, data.tax_id),
@@ -107,20 +135,7 @@ const CompanyBaseSchema = z
     }
   );
 
-export const CompanySchema = z
-  .object({
-    company_code: z.number(),
-  })
-  .extend(CompanyBaseSchema.shape);
-
-export const CreateCompanySchema = CompanyBaseSchema
-  .strict()
-  .omit({ 
-    created_at: true,
-    updated_at: true,
-  });
-
-export const CompanyUpdateSchema = CompanyBaseSchema
+export const companyUpdateSchema = companyBaseSchema
   .partial()
   .refine(
     (data) => {
@@ -138,5 +153,5 @@ export const CompanyUpdateSchema = CompanyBaseSchema
 
 // Exported schemas
 export type Company = z.infer<typeof CompanySchema>;
-export type CreateCompanyDto = z.infer<typeof CreateCompanySchema>;
-export type CompanyUpdateDto = z.infer<typeof CompanyUpdateSchema>;
+export type CreateCompanyDto = z.infer<typeof companyCreateSchema>;
+export type CompanyUpdateDto = z.infer<typeof companyUpdateSchema>;
