@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import comapnyRouter from "@modules/companies/routes";
+import companyRouter from "@modules/companies/routes";
+import employeeRouter from "@modules/employees/routes";
 
 const router = Router();
 
-router.use("/company", comapnyRouter);
+router.use("/company", companyRouter);
+router.use("/employee", employeeRouter);
 
 export default router;
