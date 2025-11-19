@@ -2,7 +2,7 @@ import * as companyRepository from "@modules/companies/repositories/company.repo
 import { CreateCompanyDto, CompanyUpdateDto } from "@modules/companies/schemas/company.schema";
 import HttpError from "@shared/errors/HttpError";
 import { validTaxId } from "@modules/companies/validators/tax-id.validator";
-import * as municipalities from "@modules/localization/repositories/minicipalities.repository"
+import * as municipalities from "@modules/localization/repositories/municipalities.repository"
 
 // Find All companies max 10 pages
 export const findAllCompanies = async (page: number = 1) => {

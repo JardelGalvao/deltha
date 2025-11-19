@@ -5,13 +5,15 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts"
+    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
+    "migration:run": "pnpm typeorm migration:run -d src/shared/database/migrations/create-employees-table.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
@@ -20,6 +22,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@prisma/config": "^6.19.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.4",
     "@types/node": "^24.9.1",
@@ -30,6 +33,8 @@
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
+    "prisma": "^6.19.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

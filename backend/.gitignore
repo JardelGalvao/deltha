@@ -40,3 +40,5 @@ coverage/
 
 # Cache
 .cache/
+/src/generated/prisma
+.toml
