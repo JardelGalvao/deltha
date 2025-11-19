@@ -8,3 +8,11 @@ export const findAll = async (pageSize: number, offset: number) => {
   
   return companies;
 };
+
+export const findById = async (id: number) => {
+  const values = [id];
+  const query = "SELECT * FROM DELTHA.EMPLOYEES WHERE EMPLOYEES.EMPLOYEE_CODE =  $1 ORDER BY EMPLOYEE_CODE;";
+  const employee = await pool.query(query, values);
+
+  return employee
+}

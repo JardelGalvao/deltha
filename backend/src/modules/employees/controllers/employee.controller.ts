@@ -10,3 +10,13 @@ export const findEmployees = async (req: Request<{ page: number }>, res: Respons
     next(error);
   };
 };
+
+export const findEmployee = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const employee = await employeeService.findEmployee(parseInt(id))
+    res.json(employee);
+  } catch(error) {
+    next(error);
+  };
+};

@@ -9,3 +9,9 @@ export const findAllEmployees = async (page: number = 1) => {
 
   return companies.rows;
 };
+
+export const findEmployee = async (id: number) => {
+  const employee = await employeeRepository.findById(id);
+
+  return employee.rows;
+}

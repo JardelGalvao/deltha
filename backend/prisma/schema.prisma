@@ -14,7 +14,7 @@ model State {
   name               String         @db.VarChar(255) @map("name")
   abbreviation       String         @db.VarChar(2) @map("abbreviation") 
   created_at         DateTime       @default(now()) @map("created_at")
-  updated_at         DateTime       @updatedAt @map("updated_at")
+  updated_at         DateTime       @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("states")
 }
@@ -28,7 +28,7 @@ model Municipality {
   state_code         Int       @map("state_code")
   state              State     @relation(fields: [state_code], references: [state_code])
   created_at         DateTime  @default(now()) @map("created_at")
-  updated_at         DateTime  @updatedAt @map("updated_at")
+  updated_at         DateTime  @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("municipalities")
 }
@@ -38,7 +38,7 @@ model Company {
   company_code       Int           @id @default(autoincrement()) @map("company_code")
   employees          Employee[]
   departments        Department[]
-  functions          Function[]
+  functions          Position[]
   tax_id_type        Int           @map("tax_id_type")
   tax_id             String        @map("tax_id")
   corporate_name     String        @db.VarChar(100) @map("corporate_name")
@@ -54,7 +54,7 @@ model Company {
   phone              String?       @db.VarChar(14) @map("phone")
   email              String?       @db.VarChar(255) @map("email")
   created_at         DateTime      @default(now()) @map("created_at")
-  updated_at         DateTime      @updatedAt @map("updated_at")
+  updated_at         DateTime      @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("companies")
 }
@@ -62,21 +62,21 @@ model Company {
 // Data model for the 'Departments' table
 model Department {
   department_code    Int       @id @default(autoincrement()) @map("department_code")
-  functions          Function[]
+  functions          Position[]
   employees          Employee[]
   company_code       Int       @map("company_code")
   company            Company   @relation(fields: [company_code], references: [company_code])
   name               String    @db.VarChar(100) @map("name")
   description        String    @db.VarChar(255) @map("description")
   created_at         DateTime  @default(now()) @map("created_at")
-  updated_at         DateTime  @updatedAt @map("updated_at")
+  updated_at         DateTime  @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("departments")
 }
 
 // Data model for the 'Departments' table
-model Function {
-  function_code      Int        @id @default(autoincrement()) @map("function_code")
+model Position {
+  position_code      Int        @id @default(autoincrement()) @map("function_code")
   employees          Employee[]
   company_code       Int        @map("company_code")
   company            Company    @relation(fields: [company_code], references: [company_code])
@@ -85,7 +85,7 @@ model Function {
   name               String     @db.VarChar(100) @map("name")
   description        String     @db.VarChar(255) @map("description")
   created_at         DateTime   @default(now()) @map("created_at")
-  updated_at         DateTime   @updatedAt @map("updated_at")
+  updated_at         DateTime   @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("functions")
 }
@@ -95,11 +95,10 @@ model Employee {
   employee_code      Int         @id @default(autoincrement()) @map("employee_code")
   company_code       Int         @map("company_code")
   company            Company     @relation(fields: [company_code], references: [company_code])
-  function_code      Int         @map("function_code")
-  function           Function    @relation(fields: [function_code], references: [function_code])
+  position_code      Int         @map("function_code")
+  position           Position    @relation(fields: [position_code], references: [position_code])
   department_code    Int         @map("department_code")
   department         Department  @relation(fields: [department_code], references: [department_code])
-  position_code      Int         @map("position_code")
   first_name         String      @db.VarChar(100) @map("first_name")
   last_name          String      @db.VarChar(100) @map("last_name")
   email              String      @db.VarChar(255) @map("email")
@@ -118,7 +117,7 @@ model Employee {
   area_code          Int?        @map("area_code")
   national_id        String?     @db.VarChar(20) @map("national_id")
   created_at         DateTime    @default(now()) @map("created_at")
-  updated_at         DateTime    @updatedAt @map("updated_at")
+  updated_at         DateTime    @default(now()) @map("updated_at")
   @@schema("deltha")
   @@map("employees")
 }
