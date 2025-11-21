@@ -31,6 +31,7 @@ const errorHandler = (
     });
   }
 
+  console.log(error)
   // This ensures that even unforeseen errors are handled gracefully.
   return res.status(500).json({
     error: "An internal server error occurred.",

@@ -1,7 +1,8 @@
+import strict from "assert/strict";
 import { z } from "zod";
 
 export const employeeBaseSchema = z.object({
-  company_code: z
+  employee_code: z
     .number()
     .int()
     .positive(),
@@ -34,11 +35,11 @@ export const employeeBaseSchema = z.object({
     .nullable()
     .optional(),
   date_of_birth: z
-    .date()
+    .coerce.date()
     .nullable()
     .optional(),
   hire_date: z
-    .date(),
+    .coerce.date(),
   termination_date: z
     .date()
     .nullable()
@@ -77,8 +78,7 @@ export const employeeBaseSchema = z.object({
     .nullable(),
   national_id: z
     .string()
-    .max(20)
-    .nullable(),
+    .max(20),
   created_at: z
     .date(),
   updated_at: z
@@ -86,7 +86,9 @@ export const employeeBaseSchema = z.object({
 });
 
 // For creating a new employee (without auto-generated fields)
-export const employeeCreateSchema = employeeBaseSchema.omit({
+export const employeeCreateSchema = employeeBaseSchema
+.strict()
+.omit({
   employee_code: true,
   created_at: true,
   updated_at: true,
@@ -101,5 +103,5 @@ export const employeeUpdateSchema = employeeBaseSchema.partial().omit({
 
 // Type inference
 export type Employee = z.infer<typeof employeeBaseSchema>;
-export type CreateEmployee = z.infer<typeof employeeCreateSchema>;
-export type UpdateEmployee = z.infer<typeof employeeUpdateSchema>;
+export type CreateEmployeeDto = z.infer<typeof employeeCreateSchema>;
+export type UpdateEmployeeDto = z.infer<typeof employeeUpdateSchema>;

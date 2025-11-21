@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as companyService from "@modules/companies/services/company.service";
-import { companyCreateSchema } from "../schemas/company.schema";
+import { companyCreateSchema } from "@modules/companies/schemas/company.schema";
 
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
