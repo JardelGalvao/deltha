@@ -5,8 +5,8 @@ import { companyCreateSchema } from "@modules/companies/schemas/company.schema";
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
     const page = req.params.page;
-    const companies = await companyService.findAllCompanies(page);
-    res.json(companies);
+    const result = await companyService.findAllCompanies(page);
+    res.json(result);
   } catch (error) {
     next(error);
   };
@@ -15,8 +15,8 @@ export const findCompanies = async (req: Request<{ page: number }>, res: Respons
 export const findCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const company = await companyService.findCompany(parseInt(id));
-    res.json(company);
+    const result = await companyService.findCompany(parseInt(id));
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -26,8 +26,8 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
   try {
     const companyData = req.body;
     companyCreateSchema.parse(req.body);
-    const company = await companyService.createCompany(companyData);
-    res.json(company);
+    const result = await companyService.createCompany(companyData);
+    res.json(result);
   } catch (error) {
     next(error);
   };
