@@ -9,7 +9,7 @@ export const findDepartments = async (req: Request<{ page: number }>, res: Respo
     res.json(departments);
   } catch (error) {
     next(error);
-  };
+  }
 };
 
 export const findDepartment = async (req: Request, res: Response, next: NextFunction) => {
@@ -19,5 +19,5 @@ export const findDepartment = async (req: Request, res: Response, next: NextFunc
     res.json(result);
   } catch (error) {
     next(error);
-  };
+  }
 };

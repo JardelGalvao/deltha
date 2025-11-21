@@ -6,6 +6,7 @@ export const findAllDepartments = async (page: number = 1) => {
   const pageNumber = Math.max(page, 1);
   const pageSize = 10;
   const offset = (pageNumber - 1) * pageSize;
+  
   const companies = await departmentRepository.findAll(pageSize, offset);
 
   return companies.rows;

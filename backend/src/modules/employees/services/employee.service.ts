@@ -9,18 +9,20 @@ export const findAllEmployees = async (page: number = 1) => {
   const pageNumber = Math.max(page, 1);
   const pageSize = 10;
   const offset = (pageNumber - 1) * pageSize;
-  const companies = await employeeRepository.findAll(pageSize, offset);
 
-  return companies.rows;
+  const employess = await employeeRepository.findAll(pageSize, offset);
+
+  return employess;
 };
 
 export const findEmployee = async (id: number) => {
-  const employee = await employeeRepository.findById(id);
+  const employee  = await employeeRepository.findById(id);
 
-  if (employee.rowCount === 0) {
+  if (employee.length === 0) {
     throw new HttpError("Employee not found.", 404);
   }
-  return employee.rows;
+
+  return employee;
 };
 
 export const createEmployee = async (employeeData: CreateEmployeeDto) => {
@@ -32,7 +34,7 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
   
   // Verify if a Employee with the TaxId already exists
   const existingEmployee = await employeeRepository.findByNationalId(national_id);
-  if (existingEmployee.rows.length > 0) {
+  if (existingEmployee.length > 0) {
     throw new HttpError('There is already a employee registered with this national id.', 409);
   };
 
@@ -45,6 +47,6 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
   };
 
   // Create the Employee
-  const newEmployee = await employeeRepository.create(employeeData);
-  return newEmployee.rows;
+  const employee = await employeeRepository.create(employeeData);
+  return employee;
 }

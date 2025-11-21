@@ -3,12 +3,12 @@ export const validTaxId = (taxId: string): boolean => {
   // Detect type by length
   if (![11, 14].includes(sanitizedTaxId.length)) {
     return false;
-  }
+  };
 
   // Invalid if all digits are the same
   if (sanitizedTaxId.split('').every(d => d === sanitizedTaxId[0])) {
     return false;
-  }
+  };
 
   const digits = sanitizedTaxId.split('').map(Number);
 
