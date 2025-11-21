@@ -4,5 +4,6 @@ import * as departmentController from "@modules/departments/controllers/departme
 const departmentRouter = Router();
 
 departmentRouter.get("/", departmentController.findDepartments);
+departmentRouter.get("/:id", departmentController.findDepartment);
 
 export default departmentRouter;
