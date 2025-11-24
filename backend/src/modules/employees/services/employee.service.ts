@@ -74,3 +74,13 @@ export const updateEmployee = async (employeeData: UpdateEmployeeDto, id: number
 
   return employeeUpdated;
 };
+
+export const deleteEmployee = async (id: number) => {
+  const employee = await employeeRepository.findById(id);
+
+  if (employee.length === 0) {
+    throw new HttpError("Employee not found.", 404);
+  }
+
+  await employeeRepository.remove(id);
+}

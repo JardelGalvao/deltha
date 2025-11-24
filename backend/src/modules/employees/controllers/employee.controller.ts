@@ -60,3 +60,22 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+export const deleteEmployee = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const employeeId = Number(id);
+
+    if(!Number.isInteger(employeeId) || employeeId <= 0){
+      throw new HttpError("Invalid employee code.", 400); 
+    }
+
+    await employeeService.deleteEmployee(employeeId);
+
+    res.status(200).json({
+      message: "success!" 
+    });
+  } catch (error) {
+    next(error);
+  }
+}

@@ -1,6 +1,7 @@
 import pool from "@shared/database/connection";
 import { CreateEmployeeDto, UpdateEmployeeDto } from "@modules/employees/schemas/employee.schema";
 import { QueryResult } from "pg";
+import { queryObjects } from "v8";
 
 export const findAll = async (pageSize: number, offset: number) => {
   const query = `
@@ -80,4 +81,18 @@ export const update = async (employeeData: UpdateEmployeeDto, id: number) => {
   const queryResult: QueryResult = await pool.query(query, values);
 
   return queryResult.rows;
-}
+};
+
+export const remove = async (id: number) => {
+  const values = [id]
+
+  const query = `
+    DELETE
+    FROM DELTHA.EMPLOYEES
+    WHERE EMPLOYEE_CODE = $1
+  `.trim();
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+};

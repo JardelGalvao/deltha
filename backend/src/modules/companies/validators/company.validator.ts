@@ -1,12 +1,12 @@
-import * as companySchemas from "@modules/companies/schemas/company.schema";
+import { z } from "zod";
 import { NextFunction, Request, Response } from "express";
 
-export const companyCreateValidate = (createCompanySchema: typeof companySchemas.companyCreateSchema) => (req: Request, res: Response, next: NextFunction) => {
+export const companyCreateValidate = (createCompanySchema: z.ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
   createCompanySchema.parse(req.body);
   next();
 };
 
-export const companyUpdadteValidate = (companyPutSchema: typeof companySchemas.companyUpdateSchema) => (req: Request, res: Response, next: NextFunction) => {
+export const companyUpdadteValidate = (companyPutSchema: z.ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
   companyPutSchema.parse(req.body);
   next();
 };
