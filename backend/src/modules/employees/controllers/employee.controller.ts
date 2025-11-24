@@ -42,3 +42,21 @@ export const createEmployee = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+export const updateEmployee = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const employeeData = req.body;
+    const { id } = req.params;
+    const employeeId = Number(id);
+
+    if (!Number.isInteger(employeeId) || employeeId <= 0){
+      throw new HttpError("Invalid employee code.", 400);  
+    }
+
+    const updatesEmployee = await employeeService.updateEmployee(employeeData, employeeId);
+
+    res.status(200).json(updatesEmployee);
+  } catch (error) {
+    next(error);
+  }
+};

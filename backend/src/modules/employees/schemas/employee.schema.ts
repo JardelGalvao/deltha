@@ -6,6 +6,9 @@ export const employeeBaseSchema = z.object({
     .number()
     .int()
     .positive(),
+  company_code: z
+    .int()
+    .positive(),
   department_code: z
     .int()
     .positive(),
@@ -98,7 +101,7 @@ export const employeeCreateSchema = employeeBaseSchema
 
 // For updating an employee (all fields optional except employee_code)
 export const employeeUpdateSchema = employeeBaseSchema.partial().omit({
-  // employee_code: true,
+  employee_code: true,
 });
 
 // Type inference

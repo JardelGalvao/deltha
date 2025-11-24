@@ -1,8 +1,9 @@
 import * as employeeRepository from "@modules/employees/repositories/employee.repository";
 import HttpError from "@shared/errors/HttpError";
-import { CreateEmployeeDto } from "../schemas/employee.schema";
+import { CreateEmployeeDto, Employee, UpdateEmployeeDto } from "../schemas/employee.schema";
 import { validTaxId } from "@modules/companies/validators/tax-id.validator";
-import * as municipalities from "@modules/localization/repositories/municipalities.repository"
+import * as municipalities from "@modules/localization/repositories/municipalities.repository";
+import * as companyRepository from "@modules/companies/repositories/company.repository";
 
 // Find All companies max 10 pages
 export const findAllEmployees = async (page: number = 1) => {
@@ -49,4 +50,27 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
   // Create the Employee
   const employee = await employeeRepository.create(employeeData);
   return employee;
-}
+};
+
+export const updateEmployee = async (employeeData: UpdateEmployeeDto, id: number) => {
+  const { company_code } = employeeData;
+
+  if (company_code) {
+    const company = await companyRepository.findById(company_code);
+
+    if (company.length === 0) {
+      throw new HttpError("Company not found.", 404);
+    }
+  }
+
+  const employee = await employeeRepository.findById(id);
+
+  if (employee.length === 0) {
+    throw new HttpError("Employee not found.", 404);
+  }
+
+  // Update employee
+  const employeeUpdated = await employeeRepository.update(employeeData, id);
+
+  return employeeUpdated;
+};

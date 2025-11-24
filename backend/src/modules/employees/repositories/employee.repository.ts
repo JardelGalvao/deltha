@@ -1,5 +1,5 @@
 import pool from "@shared/database/connection";
-import { CreateEmployeeDto } from "@modules/employees/schemas/employee.schema";
+import { CreateEmployeeDto, UpdateEmployeeDto } from "@modules/employees/schemas/employee.schema";
 import { QueryResult } from "pg";
 
 export const findAll = async (pageSize: number, offset: number) => {
@@ -61,3 +61,23 @@ export const create = async (employeeData: CreateEmployeeDto) => {
   return queryResult.rows;
 };
 
+export const update = async (employeeData: UpdateEmployeeDto, id: number) => {
+  const fields = Object.keys(employeeData);
+  let values = Object.values(employeeData);
+
+  const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
+  const setIdClause = `$${fields.length + 1}`;
+
+  values = [...values, id];
+
+  const query = `
+    UPDATE DELTHA.EMPLOYEES
+    SET ${setClauses}
+    WHERE EMPLOYEE_CODE = ${setIdClause}
+    RETURNING *;
+  `.trim();
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+}

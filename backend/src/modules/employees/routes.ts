@@ -9,5 +9,6 @@ const employeeRouter = Router();
 employeeRouter.get("/", employeeController.findEmployees);
 employeeRouter.get("/:id", employeeController.findEmployee);
 employeeRouter.post("/", employeeValidator.employeeCreateValidate(employeeSchema.employeeCreateSchema), employeeController.createEmployee);
+employeeRouter.put("/:id", employeeValidator.employeeUpdadteValidate(employeeSchema.employeeUpdateSchema), employeeController.updateEmployee);
 
 export default employeeRouter;
