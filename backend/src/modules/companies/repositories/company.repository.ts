@@ -71,13 +71,14 @@ export const update = async (companyData: CompanyUpdateDto, id: number) => {
   };
 
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
-  const setValues = `$${fields.length + 1}`;
+  const setIdClause = `$${fields.length + 1}`;
 
   values = [...values, id];
 
   const query = `
     UPDATE DELTHA.COMPANIES
-    SET ${setClauses} WHERE COMPANY_CODE = ${setValues}
+    SET ${setClauses}
+    WHERE COMPANY_CODE = ${setIdClause}
     RETURNING *
     `.trim();
 

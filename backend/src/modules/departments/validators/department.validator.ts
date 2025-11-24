@@ -6,3 +6,8 @@ export const departmentCreateValidate = (createDepartmentSchema: typeof departme
     createDepartmentSchema.parse(req.body);
     next();
 };
+
+export const departmentUpdateValidate = (updateDepartmentSchema: typeof departmentSchemas.departmentUpdateSchema) => (req: Request, res: Response, next: NextFunction) => {
+    updateDepartmentSchema.parse(req.body);
+    next();
+};

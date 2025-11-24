@@ -1,6 +1,6 @@
 import pool from "@shared/database/connection";
 import { QueryResult } from "pg";
-import { CreateDepartmentDto } from "@modules/departments/schemas/department.schema";
+import * as departmentSchemas from "@modules/departments/schemas/department.schema";
 
 export const findAll = async (pageSize: number, offset: number) => {
   const query = `
@@ -23,12 +23,12 @@ export const findById = async (id: number) => {
   `.trim();
 
   const values = [id];
-  const result: QueryResult = await pool.query(query, values);
+  const queryResult: QueryResult = await pool.query(query, values);
 
-  return result;
+  return queryResult.rows;
 };
 
-export const create = async (departmentData: CreateDepartmentDto) => {
+export const create = async (departmentData: departmentSchemas.CreateDepartmentDto) => {
   const values = Object.values(departmentData);
   const fields = Object.keys(departmentData);
 
@@ -45,3 +45,38 @@ export const create = async (departmentData: CreateDepartmentDto) => {
   
   return queryResult.rows;
 };
+
+export const update = async (departmentData: departmentSchemas.UpdateDepartmentDto, id: number) => {
+  const fields = Object.keys(departmentData);
+  let values = Object.values(departmentData);
+
+  const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
+  const setIdClause = `$${fields.length + 1}`;
+
+  values = [...values, id];
+
+  const query = `
+    UPDATE DELTHA.DEPARTMENTS
+    SET ${setClauses}
+    WHERE DEPARTMENT_CODE = ${setIdClause}
+    RETURNING *
+  `.trim();
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+};
+
+export const remove = async (id: number) => {
+  const values = [id];
+
+  const query = `
+    DELETE
+    FROM DELTHA.DEPARTMENTS
+    WHERE DEPARTMENT_CODE = $1
+  `.trim();
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+}

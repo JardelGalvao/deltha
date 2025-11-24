@@ -32,7 +32,10 @@ export const departmentCreateSchema = departmentBaseSchema
   updated_at: true,
 });
 
+export const departmentUpdateSchema = departmentBaseSchema
+  .partial();
 
 // Type inference
 export type Department = z.infer<typeof departmentBaseSchema>;
 export type CreateDepartmentDto = z.infer<typeof departmentCreateSchema>;
+export type UpdateDepartmentDto = z.infer<typeof departmentUpdateSchema>;

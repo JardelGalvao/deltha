@@ -4,9 +4,8 @@ import * as companyService from "@modules/companies/services/company.service";
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
     const page = req.params.page;
-    
     const companies = await companyService.findAllCompanies(page);
-    
+
     res.json(companies);
   } catch (error) {
     next(error);
@@ -38,21 +37,30 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const updateCompany = async (req: Request, res: Response) => {
-  const companyData = req.body;
-  const { id } = req.params;
+export const updateCompany = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const companyData = req.body;
+    const { id } = req.params;
 
-  await companyService.updateCompany(companyData, parseInt(id));
+    await companyService.updateCompany(companyData, parseInt(id));
   
-  res.json(companyData);
+    res.json(companyData);
+  } catch (error) {
+    next(error);
+  }
+ 
 };
 
-export const deleteCompany = async (req: Request, res: Response) => {
-  const { id } = req.params;
+export const deleteCompany = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
   
   await companyService.deleteCompany(parseInt(id));
   
   res.json({
-    message: "success!" // Corrected typo: "sucess!" -> "success!"
+    message: "success!" 
   });
+  } catch (error) {
+    next(error);
+  }
 };
