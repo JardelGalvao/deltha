@@ -100,9 +100,11 @@ export const employeeCreateSchema = employeeBaseSchema
 });
 
 // For updating an employee (all fields optional except employee_code)
-export const employeeUpdateSchema = employeeBaseSchema.partial().omit({
-  employee_code: true,
-});
+export const employeeUpdateSchema = employeeBaseSchema
+  .partial()
+  .omit({
+    employee_code: true,
+  });
 
 // Type inference
 export type Employee = z.infer<typeof employeeBaseSchema>;

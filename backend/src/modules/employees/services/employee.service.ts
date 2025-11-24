@@ -83,4 +83,4 @@ export const deleteEmployee = async (id: number) => {
   }
 
   await employeeRepository.remove(id);
-}
+};

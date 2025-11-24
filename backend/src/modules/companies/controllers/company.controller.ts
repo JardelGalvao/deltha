@@ -5,6 +5,7 @@ import HttpError from "@shared/errors/HttpError";
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
     const page = req.params.page;
+    
     const companies = await companyService.findAllCompanies(page);
 
     res.status(200).json(companies);

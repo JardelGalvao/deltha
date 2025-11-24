@@ -78,5 +78,4 @@ export const deleteDepartment = async (req: Request, res: Response, next: NextFu
   } catch (error) {
     next(error);
   }
-
-}
+};
