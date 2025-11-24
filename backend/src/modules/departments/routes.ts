@@ -8,7 +8,7 @@ const departmentRouter = Router();
 departmentRouter.get("/", departmentController.findDepartments);
 departmentRouter.get("/:id", departmentController.findDepartment);
 departmentRouter.post("/", departmentValidator.departmentCreateValidate(departmentSchema.departmentCreateSchema), departmentController.createDepartment);
-departmentRouter.put("/:îd", departmentValidator.departmentUpdateValidate(departmentSchema.departmentUpdateSchema), departmentController.updateDepartment);
+departmentRouter.put("/:id", departmentValidator.departmentUpdateValidate(departmentSchema.departmentUpdateSchema), departmentController.updateDepartment);
 departmentRouter.delete("/:id", departmentController.deleteDepartment);
 
 export default departmentRouter;

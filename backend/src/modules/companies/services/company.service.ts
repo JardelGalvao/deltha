@@ -37,7 +37,7 @@ export const createCompany = async (companyData: CreateCompanyDto) => {
   // Verify if a company with the TaxId already exists
   const existingCompany = await companyRepository.findByTaxId(tax_id);
   if (existingCompany.length > 0) {
-    throw new HttpError('Company not found.', 404);
+    throw new HttpError('There is already a company with this tax id.', 400);
   }
 
   // Verify if the municipality_code is valid
@@ -74,7 +74,7 @@ export const updateCompany = async (companyData: CompanyUpdateDto, id: number) =
   if (tax_id){
     const existingCompany = await companyRepository.findByTaxId(String(tax_id));
     if (existingCompany.length !== 0 && existingCompany[0].company_code !== id) {
-      throw new HttpError(`Municipality not found.`, 404);
+      throw new HttpError(`There is already a company with this tax id.`, 400);
     }
   }
 
@@ -91,7 +91,9 @@ export const updateCompany = async (companyData: CompanyUpdateDto, id: number) =
     }
   }
 
-  await companyRepository.update(companyData, id);
+  const updatedCompany = await companyRepository.update(companyData, id);
+  
+  return updatedCompany;
 };
 
 // Delete company

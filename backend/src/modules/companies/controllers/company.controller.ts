@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import * as companyService from "@modules/companies/services/company.service";
+import HttpError from "@shared/errors/HttpError";
 
 export const findCompanies = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
   try {
     const page = req.params.page;
     const companies = await companyService.findAllCompanies(page);
 
-    res.json(companies);
+    res.status(200).json(companies);
   } catch (error) {
     next(error);
   }
@@ -16,10 +17,15 @@ export const findCompanies = async (req: Request<{ page: number }>, res: Respons
 export const findCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
+    const companyId = Number(id);
 
+    if (!Number.isInteger(companyId) || companyId <= 0) {  
+      throw new HttpError("Invalid company code.", 400);  
+    }
+    
     const company = await companyService.findCompany(parseInt(id));
 
-    res.json(company);
+    res.status(200).json(company);
   } catch (error) {
     next(error);
   }
@@ -31,7 +37,7 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
 
     const company = await companyService.createCompany(companyData);
 
-    res.json(company);
+    res.status(201).json(company);
   } catch (error) {
     next(error);
   }
@@ -41,10 +47,15 @@ export const updateCompany = async (req: Request, res: Response, next: NextFunct
   try {
     const companyData = req.body;
     const { id } = req.params;
+    const companyId = Number(id);
 
-    await companyService.updateCompany(companyData, parseInt(id));
+    if (!Number.isInteger(companyId) || companyId <= 0) {  
+      throw new HttpError("Invalid company code.", 400);  
+    }
+
+    const updatedCompany = await companyService.updateCompany(companyData, parseInt(id));
   
-    res.json(companyData);
+    res.status(200).json(updatedCompany);
   } catch (error) {
     next(error);
   }
@@ -54,12 +65,17 @@ export const updateCompany = async (req: Request, res: Response, next: NextFunct
 export const deleteCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-  
-  await companyService.deleteCompany(parseInt(id));
-  
-  res.json({
-    message: "success!" 
-  });
+    const companyId = Number(id);
+
+    if (!Number.isInteger(companyId) || companyId <= 0) {  
+      throw new HttpError("Invalid company code.", 400);  
+    }
+
+    await companyService.deleteCompany(parseInt(id));
+    
+    res.status(200).json({
+      message: "success!" 
+    });
   } catch (error) {
     next(error);
   }

@@ -38,7 +38,7 @@ export const createDepartment = async (departmentData: CreateDepartmentDto) => {
 
   const department = departmentRepositoy.create(departmentData);
   return department;
-}
+};
 
 // Update Department
 export const updateDepartment = async (departmentData: UpdateDepartmentDto, id: number) => {
@@ -63,10 +63,6 @@ export const updateDepartment = async (departmentData: UpdateDepartmentDto, id: 
 
 // Delete Department
 export const deleteDepartment = async (id: number) => {
-  if (id === 0 || id < 0 || id === undefined || id === null) {
-    throw new HttpError("Invalid department code.", 400);
-  }
-
   const departament = await departmentRepository.findById(id);
 
   if (departament.length === 0){
