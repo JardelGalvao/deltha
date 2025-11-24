@@ -24,7 +24,7 @@ export const findCompany = async (req: Request, res: Response, next: NextFunctio
       throw new HttpError("Invalid company code.", 400);  
     }
     
-    const company = await companyService.findCompany(parseInt(id));
+    const company = await companyService.findCompany(companyId);
 
     res.status(200).json(company);
   } catch (error) {

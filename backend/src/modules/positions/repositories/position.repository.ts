@@ -14,3 +14,18 @@ export const findAll = async (pageSize: number, offset: number) => {
   
   return queryResult.rows;
 };
+
+export const findById = async (id: number) => {
+  const query = `
+    SELECT *
+    FROM DELTHA.POSITIONS
+    WHERE POSITION_CODE = $1
+    ORDER BY POSITION_CODE
+  `.trim();
+
+  const values = [id];
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+}

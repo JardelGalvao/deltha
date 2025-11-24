@@ -4,5 +4,6 @@ import * as positionController from "@modules/positions/controllers/position.con
 export const positionRouter = Router();
 
 positionRouter.get('/', positionController.findPositions);
+positionRouter.get('/:id', positionController.findPosition);
 
 export default positionRouter;

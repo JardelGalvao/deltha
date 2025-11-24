@@ -1,4 +1,5 @@
 import * as positionService from "@modules/positions/services/position.service";
+import HttpError from "@shared/errors/HttpError";
 import { Request, Response, NextFunction } from "express";
 
 export const findPositions = async (req: Request<{ page: number }>, res: Response, next: NextFunction) => {
@@ -12,3 +13,20 @@ export const findPositions = async (req: Request<{ page: number }>, res: Respons
       next(error);
   }
 };
+
+export const findPosition = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const positionId = Number(id);
+
+    if (!Number.isInteger(positionId) || positionId <= 0) {  
+      throw new HttpError("Invalid company code.", 400);  
+    }
+    
+    const position = await positionService.findPosition(positionId);
+
+    res.status(200).json(position);
+  } catch (error) {
+    next(error);
+  }
+}
