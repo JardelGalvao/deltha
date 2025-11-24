@@ -21,3 +21,13 @@ export const findDepartment = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+export const createDepartment = async (req: Request, res: Response, next: NextFunction) => {
+  try{
+    const departmentData = req.body;
+    const result = await departmentService.createDepartment(departmentData);
+    res.json(result);
+  }catch (error) {
+    next(error);
+  }
+};

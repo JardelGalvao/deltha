@@ -41,7 +41,7 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
   // Verify if the municipality_code is valid
   if (municipality_code) {
     const municipality = await municipalities.findById(municipality_code);
-    if (municipality.rowCount === 0) {
+    if (municipality.length === 0) {
       throw new HttpError(`There is no Municipality for the code ${municipality_code}.`, 400);
     };
   };

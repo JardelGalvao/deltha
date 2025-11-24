@@ -7,6 +7,6 @@ const router = Router();
 
 router.use("/companies", companyRouter);
 router.use("/employees", employeeRouter);
-router.use("/departmnets", departmentRouter);
+router.use("/departments", departmentRouter);
 
 export default router;

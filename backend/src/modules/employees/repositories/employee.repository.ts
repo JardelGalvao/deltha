@@ -1,5 +1,5 @@
 import pool from "@shared/database/connection";
-import { CreateEmployeeDto } from "../schemas/employee.schema";
+import { CreateEmployeeDto } from "@modules/employees/schemas/employee.schema";
 import { QueryResult } from "pg";
 
 export const findAll = async (pageSize: number, offset: number) => {
