@@ -31,6 +31,22 @@ export const findPosition = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+export const createPosition = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reqBody = req.body;
+
+    if (!reqBody || Object.keys(reqBody).length === 0) {
+      throw new HttpError("No create data provided.", 400);  
+    }
+
+    const createdPosition = await positionService.createPosition(reqBody);
+
+    res.status(201).json(createdPosition);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updatePosition = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reqBody = req.body;
@@ -49,6 +65,25 @@ export const updatePosition = async (req: Request, res: Response, next: NextFunc
     const updatedPosition = await positionService.updatePosition(reqBody, positionId);
     
     res.status(200).json(updatedPosition);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deletePosition = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const positionId = Number(id);
+
+    if (!Number.isInteger(positionId) || positionId <= 0) {  
+      throw new HttpError("Invalid position code.", 400);  
+    }
+
+    await positionService.deletePosition(positionId);
+
+    res.status(200).json({
+      message: "success!" 
+    });
   } catch (error) {
     next(error);
   }

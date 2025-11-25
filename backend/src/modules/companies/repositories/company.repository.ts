@@ -88,10 +88,6 @@ export const update = async (companyData: CompanyUpdateDto, id: number) => {
 };
 
 export const remove = async (id: number) => {
-  if (!id || id <= 0) {  
-    throw new Error("Invalid company ID");  
-  }
-
   const query = `
     DELETE FROM DELTHA.COMPANIES
     WHERE COMPANY_CODE = $1

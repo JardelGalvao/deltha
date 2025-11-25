@@ -30,6 +30,24 @@ export const findById = async (id: number) => {
   return queryResult.rows;
 };
 
+export const create = async (positionData: CreatePositionDto) => {
+  const keys = Object.keys(positionData);
+  const values = Object.values(positionData);
+
+  const setColumns = keys.map((key) => `${key}`).join(", ");
+  const setValues = values.map((value, index) => `$${index + 1}`).join(", ");
+
+  const query = `
+    INSERT INTO DELTHA.POSITIONS (${setColumns})
+    VALUES (${setValues})
+    RETURNING *;
+  `.trim();
+
+  const queryResult: QueryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+};
+
 export const update = async (positionData: UpdatePositionDto, id: number) => {
   const keys = Object.keys(positionData);
   let values = Object.values(positionData);
@@ -46,6 +64,20 @@ export const update = async (positionData: UpdatePositionDto, id: number) => {
   values = [...values, id];
 
   const queryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+};
+
+export const remove = async (id: number) => {
+  const query = `
+    DELETE
+    FROM DELTHA.POSITIONS
+    WHERE POSITION_CODE = $1
+  `.trim();
+
+  const values = [id];
+
+  const queryResult: QueryResult = await pool.query(query, values);
 
   return queryResult.rows;
 };

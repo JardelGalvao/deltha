@@ -5,7 +5,7 @@ export const positionBaseSchema = z.object({
     .number()
     .int()
     .positive(),
-  comppany_code: z
+  company_code: z
     .number()
     .int()
     .positive(),
@@ -30,13 +30,17 @@ export const positionBaseSchema = z.object({
 export const positionCreateSchema = positionBaseSchema
   .strict()
   .omit({
-    position_code: true
+    position_code: true,
+    created_at: true,
+    updated_at: true,
   });
 
 export const positionUpdateSchema = positionBaseSchema
   .partial()
   .omit({
-    position_code: true
+    position_code: true,
+    created_at: true,
+    updated_at: true,
   });
 
   export type Position = z.infer<typeof positionBaseSchema>;
