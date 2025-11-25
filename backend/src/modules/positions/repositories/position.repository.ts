@@ -28,4 +28,24 @@ export const findById = async (id: number) => {
   const queryResult: QueryResult = await pool.query(query, values);
 
   return queryResult.rows;
-}
+};
+
+export const update = async (positionData: UpdatePositionDto, id: number) => {
+  const keys = Object.keys(positionData);
+  let values = Object.values(positionData);
+
+  const setColumns = keys.map((value, index) => `${value} = $${index + 1}`);
+  
+  const query = `
+    UPDATE DELTHA.POSITIONS
+    SET ${setColumns}
+    WHERE POSITION_CODE = $${keys.length + 1}
+    RETURNING *;
+  `.trim();
+
+  values = [...values, id];
+
+  const queryResult = await pool.query(query, values);
+
+  return queryResult.rows;
+};

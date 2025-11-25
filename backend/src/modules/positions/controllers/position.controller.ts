@@ -20,7 +20,7 @@ export const findPosition = async (req: Request, res: Response, next: NextFuncti
     const positionId = Number(id);
 
     if (!Number.isInteger(positionId) || positionId <= 0) {  
-      throw new HttpError("Invalid company code.", 400);  
+      throw new HttpError("Invalid position code.", 400);  
     }
     
     const position = await positionService.findPosition(positionId);
@@ -29,4 +29,27 @@ export const findPosition = async (req: Request, res: Response, next: NextFuncti
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const updatePosition = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reqBody = req.body;
+
+    if (!reqBody || Object.keys(reqBody).length === 0) {
+      throw new HttpError("No update data provided.", 400);  
+    }
+     
+    const { id } = req.params;
+    const positionId = Number(id);
+
+    if (!Number.isInteger(positionId) || positionId <= 0) {
+      throw new HttpError("Invalid position code.", 400);  
+    }
+
+    const updatedPosition = await positionService.updatePosition(reqBody, positionId);
+    
+    res.status(200).json(updatedPosition);
+  } catch (error) {
+    next(error);
+  }
+};
