@@ -104,6 +104,8 @@ export const employeeUpdateSchema = employeeBaseSchema
   .partial()
   .omit({
     employee_code: true,
+    created_at: true,
+    updated_at: true,
   });
 
 // Type inference

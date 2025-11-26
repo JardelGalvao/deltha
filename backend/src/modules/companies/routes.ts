@@ -8,7 +8,7 @@ const companyRouter = Router();
 companyRouter.get("/", companyController.findCompanies);
 companyRouter.get("/:id", companyController.findCompany);
 companyRouter.post("/", companyValidate.companyCreateValidate(companySchema.companyCreateSchema), companyController.createCompany);
-companyRouter.delete("/:id", companyController.deleteCompany);
 companyRouter.put("/:id", companyValidate.companyUpdadteValidate(companySchema.companyUpdateSchema), companyController.updateCompany);
+companyRouter.delete("/:id", companyController.deleteCompany);
 
 export default companyRouter;
