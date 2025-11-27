@@ -33,7 +33,6 @@ export const findClient = async (req: Request, res: Response, next: NextFunction
 
 export const createClient = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('SSSSSSSSSSSSSSSSS')
     const clientData = req.body;
     
     const client = await clientService.createClient(clientData);

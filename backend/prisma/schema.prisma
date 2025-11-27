@@ -1,123 +1,297 @@
-generator client {
-  provider = "prisma-client-js"
+generator client {  
+  provider = "prisma-client-js"  
 }
-
-datasource db {
-  provider = "postgresql"
-  schemas  = ["deltha"]
+  
+datasource db {  
+  provider = "postgresql"  
+  schemas  = ["deltha"]  
 }
-
-// Data model for the 'States' table
-model State {
-  state_code         Int            @id @default(autoincrement()) @map("state_code")
-  municipalities     Municipality[]
-  name               String         @db.VarChar(255) @map("name")
-  abbreviation       String         @db.VarChar(2) @map("abbreviation") 
-  created_at         DateTime       @default(now()) @map("created_at")
+  
+// Data model for the 'Clients' table  
+model Clients {  
+  // Primary Key  
+  client_id          Int            @id @default(autoincrement()) @map("client_id")
+    
+  // Foreign Keys  
+  municipality_id    Int            @map("municipality_id")
+    
+  // Relations  
+  municipality       Municipalities @relation(fields: [municipality_id], references: [municipality_id])
+    
+  // Reverse Relations  
+  client_users       ClientUsers[]  
+  companies          Companies[]  
+  departments        Departments[]  
+  positions          Positions[]  
+  employees          Employees[]
+    
+  // Required Fields  
+  tax_id_type        Int            @map("tax_id_type")  
+  tax_id             String         @db.VarChar(14) @map("tax_id")  
+  corporate_name     String         @db.VarChar(100) @map("corporate_name")
+    
+  // Optional Fields  
+  name               String?        @db.VarChar(100) @map("name")  
+  address            String?        @db.VarChar(40) @map("address")  
+  address_number     Int?           @map("address_number")  
+  address_complement String?        @db.VarChar(30) @map("address_complement")  
+  postal_code        String?        @db.VarChar(8) @map("postal_code")  
+  neighborhood       String?        @db.VarChar(60) @map("neighborhood")  
+  area_code          String?        @db.VarChar(3) @map("area_code")  
+  phone              String?        @db.VarChar(14) @map("phone")  
+  email              String?        @db.VarChar(255) @map("email")
+    
+  // System Fields  
+  is_active          Boolean        @default(true) @map("is_active")  
+  created_at         DateTime       @default(now()) @map("created_at")  
   updated_at         DateTime       @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("states")
+  
+  @@index([municipality_id])  
+  @@schema("deltha")  
+  @@map("clients")  
 }
-
-// Data model for the 'Municipalities' table
-model Municipality {
-  municipality_code  Int       @id @default(autoincrement()) @map("municipality_code")
-  companies          Company[]
-  name               String    @db.VarChar(100) @map("name")
-  ibge_code          Int?      @map("ibge_code")
-  state_code         Int       @map("state_code")
-  state              State     @relation(fields: [state_code], references: [state_code])
-  created_at         DateTime  @default(now()) @map("created_at")
-  updated_at         DateTime  @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("municipalities")
+  
+// Data model for the 'Client's Users table'  
+model ClientUsers {  
+  // Primary Key  
+  client_user_id     Int      @id @default(autoincrement()) @map("client_user_id")
+    
+  // Foreign Keys  
+  client_id          Int      @map("client_id")
+    
+  // Relations  
+  client             Clients  @relation(fields: [client_id], references: [client_id])
+    
+  // Required Fields  
+  name               String   @db.VarChar(255)  
+  email              String   @db.VarChar(255)
+    
+  // System Fields  
+  is_active          Boolean  @default(true) @map("is_active")  
+  created_at         DateTime @default(now()) @map("created_at")  
+  updated_at         DateTime @default(now()) @map("updated_at")
+  
+  @@unique([client_id, email])  
+  @@index([client_id])  
+  @@schema("deltha")  
+  @@map("client_users")  
 }
-
-// Data model for the 'Companies' table
-model Company {
-  company_code       Int           @id @default(autoincrement()) @map("company_code")
-  employees          Employee[]
-  departments        Department[]
-  poisitions         Position[]
-  tax_id_type        Int           @map("tax_id_type")
-  tax_id             String        @map("tax_id")
-  corporate_name     String        @db.VarChar(100) @map("corporate_name")
-  municipality_code  Int           @map("municipality_code")
-  municipality       Municipality  @relation(fields: [municipality_code], references: [municipality_code])
-  name               String?       @db.VarChar(100) @map("name")
-  address            String?       @db.VarChar(40) @map("address")
-  address_number     Int?          @map("address_number")
-  address_complement String?       @db.VarChar(30) @map("address_complement")
-  postal_code        String?       @db.VarChar(8) @map("postal_code")
-  neighborhood       String?       @db.VarChar(60) @map("neighborhood")
-  area_code          String?       @db.VarChar(3) @map("area_code")
-  phone              String?       @db.VarChar(14) @map("phone")
-  email              String?       @db.VarChar(255) @map("email")
-  created_at         DateTime      @default(now()) @map("created_at")
-  updated_at         DateTime      @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("companies")
+  
+// Data model for the 'States' table  
+model States {  
+  // Primary Key  
+  state_id           Int                @id @default(autoincrement()) @map("state_id")
+    
+  // Reverse Relations  
+  municipalities     Municipalities[]
+    
+  // Required Fields  
+  name               String             @db.VarChar(255) @map("name")  
+  abbreviation       String             @db.VarChar(2) @map("abbreviation")
+    
+  // System Fields  
+  created_at         DateTime           @default(now()) @map("created_at")  
+  updated_at         DateTime           @default(now()) @map("updated_at")
+  
+  @@unique([abbreviation])  
+  @@schema("deltha")  
+  @@map("states")  
 }
-
-// Data model for the 'Departments' table
-model Department {
-  department_code    Int       @id @default(autoincrement()) @map("department_code")
-  positions          Position[]
-  employees          Employee[]
-  company_code       Int       @map("company_code")
-  company            Company   @relation(fields: [company_code], references: [company_code])
-  name               String    @db.VarChar(100) @map("name")
-  description        String    @db.VarChar(255) @map("description")
-  created_at         DateTime  @default(now()) @map("created_at")
-  updated_at         DateTime  @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("departments")
-}
-
-// Data model for the 'Departments' table
-model Position {
-  position_code      Int        @id @default(autoincrement()) @map("position_code")
-  employees          Employee[]
-  company_code       Int        @map("company_code")
-  company            Company    @relation(fields: [company_code], references: [company_code])
-  department_code    Int        @map("department_code")
-  department         Department @relation(fields: [department_code], references: [department_code])
-  name               String     @db.VarChar(100) @map("name")
-  description        String     @db.VarChar(255) @map("description")
-  created_at         DateTime   @default(now()) @map("created_at")
-  updated_at         DateTime   @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("positions")
-}
-
-// Data Model for the 'Employees' table
-model Employee {
-  employee_code      Int         @id @default(autoincrement()) @map("employee_code")
-  company_code       Int         @map("company_code")
-  company            Company     @relation(fields: [company_code], references: [company_code])
-  position_code      Int         @map("position_code")
-  position           Position    @relation(fields: [position_code], references: [position_code])
-  department_code    Int         @map("department_code")
-  department         Department  @relation(fields: [department_code], references: [department_code])
-  first_name         String      @db.VarChar(100) @map("first_name")
-  last_name          String      @db.VarChar(100) @map("last_name")
-  email              String      @db.VarChar(255) @map("email")
-  hire_date          DateTime    @db.Date @map("hire_date")
-  salary             Decimal     @db.Decimal(10, 2) @map("salary")
-  is_active          Boolean     @default(true) @map("is_active")
-  municipality_code  Int?        @map("municipality_code")
-  phone              String?     @db.VarChar(20) @map("phone")
-  date_of_birth      DateTime?   @db.Date @map("date_of_birth")
-  termination_date   DateTime?   @db.Date @map("termination_date")
-  address            String?     @db.VarChar(255) @map("address")
-  address_number     String?     @db.VarChar(20) @map("address_number")
-  address_complement String?     @db.VarChar(100) @map("address_complement")
-  postal_code        String?     @db.VarChar(20) @map("postal_code")
-  neighborhood       String?     @db.VarChar(100) @map("neighborhood")
-  area_code          Int?        @map("area_code")
-  national_id        String?     @db.VarChar(20) @map("national_id")
-  created_at         DateTime    @default(now()) @map("created_at")
+  
+// Data model for the 'Municipalities' table  
+model Municipalities {  
+  // Primary Key  
+  municipality_id    Int         @id @default(autoincrement()) @map("municipality_id")
+    
+  // Foreign Keys  
+  state_id           Int         @map("state_id")
+    
+  // Relations  
+  state              States      @relation(fields: [state_id], references: [state_id])
+    
+  // Reverse Relations  
+  clients            Clients[]  
+  companies          Companies[]  
+  employees          Employees[]
+    
+  // Required Fields  
+  name               String      @db.VarChar(100) @map("name")
+    
+  // Optional Fields  
+  ibge_code          Int?        @map("ibge_code")
+    
+  // System Fields  
+  created_at         DateTime    @default(now()) @map("created_at")  
   updated_at         DateTime    @default(now()) @map("updated_at")
-  @@schema("deltha")
-  @@map("employees")
+  
+  @@unique([ibge_code])  
+  @@index([state_id])  
+  @@schema("deltha")  
+  @@map("municipalities")  
 }
+  
+// Data model for the 'Companies' table  
+model Companies {  
+  // Primary Key  
+  company_id         Int            @id @default(autoincrement()) @map("company_id")
+    
+  // Foreign Keys  
+  client_id          Int            @map("client_id")  
+  municipality_id    Int            @map("municipality_id")
+    
+  // Relations  
+  client             Clients        @relation(fields: [client_id], references: [client_id])  
+  municipality       Municipalities @relation(fields: [municipality_id], references: [municipality_id])
+    
+  // Reverse Relations  
+  departments        Departments[]  
+  positions          Positions[]  
+  employees          Employees[]
+    
+  // Required Fields  
+  tax_id_type        Int            @map("tax_id_type")  
+  tax_id             String         @map("tax_id")  
+  corporate_name     String         @db.VarChar(100) @map("corporate_name")
+    
+  // Optional Fields  
+  name               String?        @db.VarChar(100) @map("name")  
+  address            String?        @db.VarChar(40) @map("address")  
+  address_number     Int?           @map("address_number")  
+  address_complement String?        @db.VarChar(30) @map("address_complement")  
+  postal_code        String?        @db.VarChar(8) @map("postal_code")  
+  neighborhood       String?        @db.VarChar(60) @map("neighborhood")  
+  area_code          String?        @db.VarChar(3) @map("area_code")  
+  phone              String?        @db.VarChar(14) @map("phone")  
+  email              String?        @db.VarChar(255) @map("email")
+    
+  // System Fields  
+  created_at         DateTime       @default(now()) @map("created_at")  
+  updated_at         DateTime       @default(now()) @map("updated_at")
+  
+  @@unique([client_id, tax_id])  
+  @@index([client_id])  
+  @@index([municipality_id])  
+  @@schema("deltha")  
+  @@map("companies")  
+}
+  
+// Data model for the 'Departments' table  
+model Departments {  
+  // Primary Key  
+  department_id      Int         @id @default(autoincrement()) @map("department_id")
+    
+  // Foreign Keys  
+  client_id          Int         @map("client_id")  
+  company_id         Int         @map("company_id")
+    
+  // Relations  
+  client             Clients     @relation(fields: [client_id], references: [client_id])  
+  company            Companies   @relation(fields: [company_id], references: [company_id])
+    
+  // Reverse Relations  
+  positions          Positions[]  
+  employees          Employees[]
+    
+  // Required Fields  
+  name               String      @db.VarChar(100) @map("name")  
+  description        String      @db.VarChar(255) @map("description")
+    
+  // System Fields  
+  created_at         DateTime    @default(now()) @map("created_at")  
+  updated_at         DateTime    @default(now()) @map("updated_at")
+  
+  @@unique([client_id, company_id, name])  
+  @@index([client_id])  
+  @@index([company_id])  
+  @@schema("deltha")  
+  @@map("departments")  
+}
+  
+// Data model for the 'Positions' table  
+model Positions {  
+  // Primary Key  
+  position_id        Int         @id @default(autoincrement()) @map("position_id")
+    
+  // Foreign Keys  
+  client_id          Int         @map("client_id")  
+  company_id         Int         @map("company_id")  
+  department_id      Int         @map("department_id")
+    
+  // Relations  
+  client             Clients     @relation(fields: [client_id], references: [client_id])  
+  company            Companies   @relation(fields: [company_id], references: [company_id])  
+  department         Departments @relation(fields: [department_id], references: [department_id])
+    
+  // Reverse Relations  
+  employees          Employees[]
+    
+  // Required Fields  
+  name               String      @db.VarChar(100) @map("name")  
+  description        String      @db.VarChar(255) @map("description")
+    
+  // System Fields  
+  created_at         DateTime    @default(now()) @map("created_at")  
+  updated_at         DateTime    @default(now()) @map("updated_at")
+  
+  @@unique([client_id, company_id, department_id, name])  
+  @@index([client_id])  
+  @@index([company_id])  
+  @@index([department_id])  
+  @@schema("deltha")  
+  @@map("positions")  
+}
+  
+// Data Model for the 'Employees' table  
+model Employees {  
+  // Primary Key  
+  employee_id        Int            @id @default(autoincrement()) @map("employee_id")
+    
+  // Foreign Keys  
+  client_id          Int            @map("client_id")  
+  company_id         Int            @map("company_id")  
+  department_id      Int            @map("department_id")  
+  position_id        Int            @map("position_id")  
+  municipality_id    Int?           @map("municipality_id")
+    
+  // Relations  
+  client             Clients        @relation(fields: [client_id], references: [client_id])  
+  company            Companies      @relation(fields: [company_id], references: [company_id])  
+  department         Departments    @relation(fields: [department_id], references: [department_id])  
+  position           Positions      @relation(fields: [position_id], references: [position_id])  
+  municipality       Municipalities? @relation(fields: [municipality_id], references: [municipality_id])
+    
+  // Required Fields  
+  first_name         String         @db.VarChar(100) @map("first_name")  
+  last_name          String         @db.VarChar(100) @map("last_name")  
+  email              String         @db.VarChar(255) @map("email")  
+  national_id        String         @db.VarChar(20) @map("national_id")  
+  hire_date          DateTime       @db.Date @map("hire_date")  
+  salary             Decimal        @db.Decimal(10, 2) @map("salary")
+    
+  // Optional Fields  
+  phone              String?        @db.VarChar(20) @map("phone")  
+  date_of_birth      DateTime?      @db.Date @map("date_of_birth")  
+  termination_date   DateTime?      @db.Date @map("termination_date")  
+  address            String?        @db.VarChar(255) @map("address")  
+  address_number     String?        @db.VarChar(20) @map("address_number")  
+  address_complement String?        @db.VarChar(100) @map("address_complement")  
+  postal_code        String?        @db.VarChar(20) @map("postal_code")  
+  neighborhood       String?        @db.VarChar(100) @map("neighborhood")  
+  area_code          String?        @db.VarChar(3) @map("area_code")
+    
+  // System Fields  
+  is_active          Boolean        @default(true) @map("is_active")  
+  created_at         DateTime       @default(now()) @map("created_at")  
+  updated_at         DateTime       @default(now()) @map("updated_at")
+  
+  @@unique([client_id, email])  
+  @@unique([client_id, national_id])  
+  @@index([client_id])  
+  @@index([company_id])  
+  @@index([department_id])  
+  @@index([position_id])  
+  @@index([municipality_id])  
+  @@index([client_id, is_active])  
+  @@schema("deltha")  
+  @@map("employees")  
+}  
