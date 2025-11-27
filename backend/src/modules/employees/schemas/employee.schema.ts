@@ -2,22 +2,26 @@ import strict from "assert/strict";
 import { z } from "zod";
 
 export const employeeBaseSchema = z.object({
-  employee_code: z
+  employee_id: z
     .number()
     .int()
     .positive(),
-  company_code: z
+  cleint_id: z
+    .number()
     .int()
     .positive(),
-  department_code: z
+  company_id: z
     .int()
     .positive(),
-  municipality_code: z
+  department_id: z
+    .int()
+    .positive(),
+  municipality_id: z
     .number()
     .int()
     .positive()
     .nullable(),
-  position_code: z
+  position_id: z
     .int()
     .positive(),
   first_name: z
@@ -92,7 +96,7 @@ export const employeeBaseSchema = z.object({
 export const employeeCreateSchema = employeeBaseSchema
 .strict()
 .omit({
-  employee_code: true,
+  employee_id: true,
   created_at: true,
   updated_at: true,
 }).extend({
@@ -103,7 +107,7 @@ export const employeeCreateSchema = employeeBaseSchema
 export const employeeUpdateSchema = employeeBaseSchema
   .partial()
   .omit({
-    employee_code: true,
+    employee_id: true,
     created_at: true,
     updated_at: true,
   });

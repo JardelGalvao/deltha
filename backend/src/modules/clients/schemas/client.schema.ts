@@ -99,7 +99,7 @@ const clientBaseSchema = z
       .trim()
       .max(MAX_LENGTHS.neighborhood, `Neighborhood must be at most ${MAX_LENGTHS.neighborhood} characters`)
       .optional(),
-    municipality_code: z
+    municipality_ide: z
     .number()
     .optional(),
     area_code: areaCodeSchema,
@@ -115,7 +115,7 @@ const clientBaseSchema = z
 
 export const clientSchema = z
   .object({
-    client_code: z
+    client_ide: z
     .number(),
   })
   .extend(clientBaseSchema.shape);
@@ -124,7 +124,7 @@ export const clientSchema = z
 export const clientCreateSchema = clientSchema
   .strict()
   .omit({
-    client_code: true,
+    client_id: true,
     created_at: true,
     updated_at: true,
   })
@@ -142,7 +142,7 @@ export const clientCreateSchema = clientSchema
 export const clientUpdateSchema = clientBaseSchema
   .partial()
   .omit({
-    client_code: true,
+    client_id: true,
     created_at: true,
     updated_at: true,
   });

@@ -2,11 +2,15 @@ import { z } from "zod";
 
 const departmentBaseSchema = z
     .object({
-      department_code: z
+      department_id: z
         .number()
         .int()
         .positive(),
-      company_code: z
+      cleint_id: z
+        .number()
+        .int()
+        .positive(),
+      company_id: z
         .int()
         .positive(),
       name: z
@@ -27,7 +31,7 @@ const departmentBaseSchema = z
 export const departmentCreateSchema = departmentBaseSchema
 .strict()
 .omit({
-  department_code: true,
+  department_id: true,
   created_at: true,
   updated_at: true,
 });

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const municipalitySchema = z.object({
-  municipality_code: z
+  municipality_id: z
   .number()
   .int(),
 
@@ -15,7 +15,7 @@ export const municipalitySchema = z.object({
   .trim()
   .optional(),
 
-  state_code: z
+  state_id: z
   .string()
   .trim()
   .optional(),

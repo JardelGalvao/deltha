@@ -1,15 +1,19 @@
 import { z } from "zod";
 
 export const positionBaseSchema = z.object({
-  position_code: z
+  position_id: z
     .number()
     .int()
     .positive(),
-  company_code: z
+  cleint_id: z
     .number()
     .int()
     .positive(),
-  department_code: z
+  company_id: z
+    .number()
+    .int()
+    .positive(),
+  department_id: z
     .number()
     .int()
     .positive(),
@@ -30,7 +34,7 @@ export const positionBaseSchema = z.object({
 export const positionCreateSchema = positionBaseSchema
   .strict()
   .omit({
-    position_code: true,
+    position_id: true,
     created_at: true,
     updated_at: true,
   });
@@ -38,7 +42,7 @@ export const positionCreateSchema = positionBaseSchema
 export const positionUpdateSchema = positionBaseSchema
   .partial()
   .omit({
-    position_code: true,
+    position_id: true,
     created_at: true,
     updated_at: true,
   });

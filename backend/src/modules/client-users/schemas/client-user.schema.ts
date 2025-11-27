@@ -1,11 +1,11 @@
 import { z } from "zod";
   
 export const clientUserBaseSchema = z.object({  
-  client_user_code: z  
+  client_user_id: z  
     .number()  
     .int()  
     .positive(),  
-  client_code: z  
+  client_id: z  
     .number()  
     .int()  
     .positive(),  
@@ -34,7 +34,7 @@ export const clientUserBaseSchema = z.object({
 export const clientUserCreateSchema = clientUserBaseSchema  
   .strict()  
   .omit({  
-    client_user_code: true,  
+    client_user_id: true,  
     created_at: true,  
     updated_at: true,  
   })  
@@ -43,11 +43,11 @@ export const clientUserCreateSchema = clientUserBaseSchema
     password: clientUserBaseSchema.shape.password,  
   });
   
-// For updating a client user (all fields optional except client_user_code)  
+// For updating a client user (all fields optional except client_user_id)  
 export const clientUserUpdateSchema = clientUserBaseSchema  
   .partial()  
   .omit({  
-    client_user_code: true,  
+    client_user_id: true,  
     created_at: true,  
     updated_at: true,  
   })  

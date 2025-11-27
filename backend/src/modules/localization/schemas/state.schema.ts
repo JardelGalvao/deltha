@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const stateSchema = z.object({
-  state_code: z
+  state_id: z
   .number()
   .int(),
 

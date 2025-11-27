@@ -7,7 +7,7 @@ export const findAll = async (pageSize: number, offset: number) => {
   const query = `
     SELECT *
     FROM DELTHA.EMPLOYEES
-    ORDER BY EMPLOYEE_CODE LIMIT $1 OFFSET $2;
+    ORDER BY EMPLOYEE_ID LIMIT $1 OFFSET $2;
     `.trim();
 
   const values = [pageSize, offset];
@@ -22,8 +22,7 @@ export const findById = async (id: number) => {
   const query =`
     SELECT *
     FROM DELTHA.EMPLOYEES
-    WHERE EMPLOYEE_CODE =  $1 
-    ORDER BY EMPLOYEE_CODE;
+    WHERE EMPLOYEE_ID = $1;
     `.trim();
 
   const queryResult = await pool.query(query, values);
@@ -74,7 +73,7 @@ export const update = async (employeeData: UpdateEmployeeDto, id: number) => {
   const query = `
     UPDATE DELTHA.EMPLOYEES
     SET ${setClauses}
-    WHERE EMPLOYEE_CODE = ${setIdClause}
+    WHERE EMPLOYEE_ID = ${setIdClause}
     RETURNING *;
   `.trim();
 
@@ -89,7 +88,7 @@ export const remove = async (id: number) => {
   const query = `
     DELETE
     FROM DELTHA.EMPLOYEES
-    WHERE EMPLOYEE_CODE = $1
+    WHERE EMPLOYEE_ID = $1
   `.trim();
 
   const queryResult: QueryResult = await pool.query(query, values);

@@ -6,7 +6,7 @@ export const findAll = async (pageSize: number, offset: number) => {
   const query = `
     SELECT *
     FROM DELTHA.DEPARTMENTS
-    ORDER BY DEPARTMENT_CODE LIMIT $1 OFFSET $2;
+    ORDER BY DEPARTMENT_ID LIMIT $1 OFFSET $2;
     `.trim();
 
   const values = [pageSize, offset];
@@ -19,7 +19,7 @@ export const findById = async (id: number) => {
   const query = `
     SELECT *
     FROM DELTHA.DEPARTMENTS
-    WHERE DEPARTMENT_CODE = $1
+    WHERE DEPARTMENT_ID = $1
   `.trim();
 
   const values = [id];
@@ -58,7 +58,7 @@ export const update = async (departmentData: departmentSchemas.UpdateDepartmentD
   const query = `
     UPDATE DELTHA.DEPARTMENTS
     SET ${setClauses}
-    WHERE DEPARTMENT_CODE = ${setIdClause}
+    WHERE DEPARTMENT_ID = ${setIdClause}
     RETURNING *
   `.trim();
 
@@ -73,7 +73,7 @@ export const remove = async (id: number) => {
   const query = `
     DELETE
     FROM DELTHA.DEPARTMENTS
-    WHERE DEPARTMENT_CODE = $1
+    WHERE DEPARTMENT_ID = $1
   `.trim();
 
   const queryResult: QueryResult = await pool.query(query, values);

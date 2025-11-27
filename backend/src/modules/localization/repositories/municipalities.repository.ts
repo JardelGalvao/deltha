@@ -16,7 +16,7 @@ export const findById = async (id: number) => {
   const query = `
     SELECT *
     FROM DELTHA.MUNICIPALITIES
-    WHERE MUNICIPALITY_CODE = $1
+    WHERE MUNICIPALITY_ID = $1
     `.trim();
 
   const values = [id];

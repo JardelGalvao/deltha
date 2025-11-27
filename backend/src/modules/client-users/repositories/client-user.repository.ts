@@ -19,7 +19,7 @@ export const findById = async (id: number) => {
   const query = `
     SELECT *
     FROM DELTHA.CLIENT_USERS
-    WHERE CLIENT_USER_CODE = $1
+    WHERE CLIENT_USER_ID = $1
     `.trim();
 
   const values = [id];
@@ -32,7 +32,7 @@ export const findByClientId = async (clientId: number) => {
   const query = `
     SELECT *
     FROM DELTHA.CLIENT_USERS
-    WHERE CLIENT_CODE = $1
+    WHERE CLIENT_ID = $1
     `.trim();
 
   const values = [clientId];
@@ -71,7 +71,7 @@ export const update = async (clientUserData: UpdateClientUserDto, id: number) =>
   const query = `
     UPDATE DELTHA.CLIENT_USERS
     SET ${setClauses}
-    WHERE CLIENT_USER_CODE = ${setIdClause}
+    WHERE CLIENT_USER_ID = ${setIdClause}
     RETURNING *
     `.trim();
 
@@ -83,7 +83,7 @@ export const update = async (clientUserData: UpdateClientUserDto, id: number) =>
 export const remove = async (id: number) => {
   const query = `
     DELETE FROM DELTHA.CLIENT_USERS
-    WHERE CLIENT_USER_CODE = $1
+    WHERE CLIENT_USER_ID = $1
     `.trim();
 
   const queryResult: QueryResult = await pool.query(query, [id]);

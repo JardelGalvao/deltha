@@ -65,6 +65,10 @@ const companyBaseSchema = z
   .object({
     tax_id_type: taxIdTypeSchema,
     tax_id: taxIdSchema,
+    cleint_id: z
+      .number()
+      .int()
+      .positive(),
     corporate_name: z
       .string({ message: VALIDATION_MESSAGES.corporateName })
       .trim()
@@ -99,7 +103,7 @@ const companyBaseSchema = z
       .trim()
       .max(MAX_LENGTHS.neighborhood, `Neighborhood must be at most ${MAX_LENGTHS.neighborhood} characters`)
       .optional(),
-    municipality_code: z
+    municipality_id: z
     .number()
     .optional(),
     area_code: areaCodeSchema,
@@ -115,7 +119,7 @@ const companyBaseSchema = z
 
 export const CompanySchema = z
   .object({
-    company_code: z
+    company_id: z
     .number(),
   })
   .extend(companyBaseSchema.shape);
