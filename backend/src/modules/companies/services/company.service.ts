@@ -28,7 +28,7 @@ export const findCompany = async (id: number) => {
 
 // Create Company
 export const createCompany = async (companyData: CreateCompanyDto) => {
-  const { tax_id, municipality_code } = companyData;
+  const { tax_id, municipality_id } = companyData;
   
   if(!validTaxId(tax_id)){
     throw new HttpError("Invalid tax_id.", 422);
@@ -40,9 +40,9 @@ export const createCompany = async (companyData: CreateCompanyDto) => {
     throw new HttpError('There is already a company with this tax id.', 400);
   }
 
-  // Verify if the municipality_code is valid
-  if (municipality_code) {
-    const municipality = await municipalities.findById(municipality_code);
+  // Verify if the municipality_id is valid
+  if (municipality_id) {
+    const municipality = await municipalities.findById(municipality_id);
     if (municipality.length === 0) {
       throw new HttpError(`Municipality not found.`, 404);
     }
@@ -56,7 +56,7 @@ export const createCompany = async (companyData: CreateCompanyDto) => {
 
 // Update Company
 export const updateCompany = async (companyData: CompanyUpdateDto, id: number) => {
-  const { tax_id_type, tax_id, municipality_code } = companyData;
+  const { tax_id_type, tax_id, municipality_id } = companyData;
 
   // Verify if the company exists
   const companyById = await companyRepository.findById(id);
@@ -73,7 +73,7 @@ export const updateCompany = async (companyData: CompanyUpdateDto, id: number) =
   // Verify if the tax_id is the same or not of the current company
   if (tax_id){
     const existingCompany = await companyRepository.findByTaxId(String(tax_id));
-    if (existingCompany.length !== 0 && existingCompany[0].company_code !== id) {
+    if (existingCompany.length !== 0 && existingCompany[0].company_id !== id) {
       throw new HttpError(`There is already a company with this tax id.`, 400);
     }
   }
@@ -83,9 +83,9 @@ export const updateCompany = async (companyData: CompanyUpdateDto, id: number) =
     throw new HttpError("Both tax_id_type and tax_id must be provided together.", 409);
   }
   
-  // Verify if the municipality_code is valid
-  if (municipality_code) {
-    const municipality = await municipalities.findById(municipality_code);
+  // Verify if the municipality_id is valid
+  if (municipality_id) {
+    const municipality = await municipalities.findById(municipality_id);
     if (municipality.length === 0) {
       throw new HttpError(`Municipality not found.`, 404);
     }

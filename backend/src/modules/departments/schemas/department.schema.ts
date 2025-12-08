@@ -6,21 +6,22 @@ const departmentBaseSchema = z
         .number()
         .int()
         .positive(),
-      cleint_id: z
+      client_id: z
         .number()
         .int()
         .positive(),
       company_id: z
+        .number()
         .int()
         .positive(),
       name: z
         .string()
-        .min(1)
-        .max(100),
+        .min(1, "Name must be at least 1 character long.")
+        .max(100, "Name cannot exceed 100 characters."),
       description: z
         .string()
-        .min(1)
-        .max(255),
+        .min(1, "Description must be at least 1 character long.")
+        .max(255, "Description cannot exceed 100 characters."),
       created_at: z
         .date(),
       updated_at: z

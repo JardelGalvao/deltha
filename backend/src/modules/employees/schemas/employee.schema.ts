@@ -6,7 +6,7 @@ export const employeeBaseSchema = z.object({
     .number()
     .int()
     .positive(),
-  cleint_id: z
+  client_id: z
     .number()
     .int()
     .positive(),
@@ -14,6 +14,7 @@ export const employeeBaseSchema = z.object({
     .int()
     .positive(),
   department_id: z
+    .number()
     .int()
     .positive(),
   municipality_id: z
@@ -22,34 +23,34 @@ export const employeeBaseSchema = z.object({
     .positive()
     .nullable(),
   position_id: z
+    .number()
     .int()
     .positive(),
   first_name: z
     .string()
-    .min(1)
-    .max(100),
+    .min(1, "First name must be at least 1 character long.")
+    .max(100, "First name cannot exceed 100 characters."),
   last_name: z
     .string()
-    .min(1)
-    .max(100),
+    .min(1, "Last name must be at least 1 character long.")
+    .max(100, "Last name cannot exceed 100 characters."),
   email: z
-    .string()
-    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format')
-    .max(255),
+    .email()
+    .optional(),
   phone: z
-    .string()
-    .max(20)
-    .nullable()
+    .preprocess((number: string) => {
+      return number.trim().replace(/\D/g, '')
+    }, z.string()
+        .min(8, "Phone number must be at least 1 character long.")
+        .max(9, "Phone number cannot exceed 9 characters."))
     .optional(),
   date_of_birth: z
     .coerce.date()
-    .nullable()
     .optional(),
   hire_date: z
     .coerce.date(),
   termination_date: z
     .date()
-    .nullable()
     .optional(),
   salary: z
     .number()
@@ -60,50 +61,55 @@ export const employeeBaseSchema = z.object({
     .default(true),
   address: z
     .string()
-    .max(255)
-    .nullable(),
+    .max(255, "Address cannot exceed 255 characters.")
+    .optional(),
   address_number: z
     .string()
-    .max(20)
-    .nullable(),
+    .max(6, "Address Number cannot exceed 6 characters."),
   address_complement: z
     .string()
-    .max(100)
-    .nullable(),
+    .max(100, "Address complement cannot exceed 100 characters."),
   postal_code: z
-    .string()
-    .max(20)
-    .nullable(),
+    .preprocess((number: string) => {
+      return number.trim().replace(/\D/g, '')
+    }, z.string()
+        .length(8, "Postal code has to have 8 characters"))
+    .optional(),
   neighborhood: z
     .string()
-    .max(100)
-    .nullable(),
+    .max(100, "Neighborhood complement cannot exceed 100 characters.")
+    .optional(),
   area_code: z
-    .number()
-    .int()
-    .positive()
-    .nullable(),
+    .string()
+    .trim()
+    .length(3, "Area code has to have 3 characters.")
+    .optional(),
   national_id: z
     .string()
-    .max(20),
+    .trim()
+    .transform(data => data.trim().replace(/\D/g, '')),
   created_at: z
     .date(),
   updated_at: z
     .date()
 });
 
-// For creating a new employee (without auto-generated fields)
+// For creating a new employee
 export const employeeCreateSchema = employeeBaseSchema
-.strict()
-.omit({
-  employee_id: true,
-  created_at: true,
-  updated_at: true,
-}).extend({
-  is_active: z.boolean().optional().default(true),
-});
+  .strict()
+  .omit({
+    employee_id: true,
+    created_at: true,
+    updated_at: true,
+  })
+  .extend({
+    is_active: z
+      .boolean()
+      .optional()
+      .default(true),
+  });
 
-// For updating an employee (all fields optional except employee_code)
+// For updating an employee
 export const employeeUpdateSchema = employeeBaseSchema
   .partial()
   .omit({

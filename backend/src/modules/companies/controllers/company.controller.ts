@@ -21,7 +21,7 @@ export const findCompany = async (req: Request, res: Response, next: NextFunctio
     const companyId = Number(id);
 
     if (!Number.isInteger(companyId) || companyId <= 0) {  
-      throw new HttpError("Invalid company code.", 400);  
+      throw new HttpError("Invalid company id.", 400);  
     }
     
     const company = await companyService.findCompany(companyId);
@@ -46,17 +46,22 @@ export const createCompany = async (req: Request, res: Response, next: NextFunct
 
 export const updateCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const companyData = req.body;
-    const { id } = req.params;
-    const companyId = Number(id);
-
-    if (!Number.isInteger(companyId) || companyId <= 0) {  
-      throw new HttpError("Invalid company code.", 400);  
+    if(!req.body || Object.keys(req.body).length === 0) {
+      throw new HttpError("No data to update.", 404);
     }
 
-    const updatedCompany = await companyService.updateCompany(companyData, parseInt(id));
+    const { id } = req.params;
+    const companyId = parseInt(id, 10);
+
+    if (!Number.isInteger(companyId) || companyId <= 0) {  
+      throw new HttpError("Invalid company id.", 400);  
+    }
+    
+    const companyData = req.body;
+    const updatedCompany = await companyService.updateCompany(companyData, companyId);
   
     res.status(200).json(updatedCompany);
+
   } catch (error) {
     next(error);
   }
@@ -66,13 +71,13 @@ export const updateCompany = async (req: Request, res: Response, next: NextFunct
 export const deleteCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const companyId = Number(id);
+    const companyId = parseInt(id, 10);
 
     if (!Number.isInteger(companyId) || companyId <= 0) {  
-      throw new HttpError("Invalid company code.", 400);  
+      throw new HttpError("Invalid company id.", 400);  
     }
 
-    await companyService.deleteCompany(parseInt(id));
+    await companyService.deleteCompany(companyId);
     
     res.status(200).json({
       message: "success!" 

@@ -27,10 +27,10 @@ export const findClientUser = async (id: number) => {
 
 // Create Client User
 export const createClientUser = async (clientUserData: CreateClientUserDto) => {
-  const { client_code } = clientUserData;
+  const { client_id } = clientUserData;
 
   // Verify if the client exists
-  const client = await clientRepository.findById(client_code);
+  const client = await clientRepository.findById(client_id);
   if (client.length === 0) {
     throw new HttpError("Client not found.", 404);
   }
@@ -50,9 +50,9 @@ export const updateClientUser = async (clientUserData: UpdateClientUserDto, id: 
     throw new HttpError("Client user not found.", 404);
   }
 
-  // Verify if client_code is being updated and if it exists
-  if (clientUserData.client_code) {
-    const client = await clientRepository.findById(clientUserData.client_code);
+  // Verify if client_id is being updated and if it exists
+  if (clientUserData.client_id) {
+    const client = await clientRepository.findById(clientUserData.client_id);
     if (client.length === 0) {
       throw new HttpError("Client not found.", 404);
     }

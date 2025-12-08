@@ -28,9 +28,9 @@ export const findDepartment = async (id: number) => {
 
 // Create Department
 export const createDepartment = async (departmentData: CreateDepartmentDto) => {
-  const { company_code } = departmentData;
+  const { company_id } = departmentData;
   
-  const company = await companyRepository.findById(company_code);
+  const company = await companyRepository.findById(company_id);
 
   if(company.length === 0){
     throw new HttpError("Company not found.", 404);
@@ -42,7 +42,7 @@ export const createDepartment = async (departmentData: CreateDepartmentDto) => {
 
 // Update Department
 export const updateDepartment = async (departmentData: UpdateDepartmentDto, id: number) => {
-  const { company_code } = departmentData;
+  const { company_id } = departmentData;
 
   const fields = Object.keys(departmentData);
 
@@ -50,9 +50,9 @@ export const updateDepartment = async (departmentData: UpdateDepartmentDto, id: 
     throw new HttpError("No fields to update", 400);
   }
 
-  if (company_code) {
+  if (company_id) {
     // Verify if the company exists
-    const companyById = await companyRepository.findById(company_code);
+    const companyById = await companyRepository.findById(company_id);
     if (companyById.length === 0){
       throw new HttpError("Company not found.", 404);
     }

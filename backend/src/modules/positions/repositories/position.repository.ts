@@ -6,7 +6,7 @@ export const findAll = async (pageSize: number, offset: number) => {
   const query = `
     SELECT *
     FROM DELTHA.POSITIONS
-    ORDER BY POSITION_CODE LIMIT $1 OFFSET $2;
+    ORDER BY POSITION_ID LIMIT $1 OFFSET $2;
   `.trim();
 
   const values = [pageSize, offset];
@@ -19,8 +19,8 @@ export const findById = async (id: number) => {
   const query = `
     SELECT *
     FROM DELTHA.POSITIONS
-    WHERE POSITION_CODE = $1
-    ORDER BY POSITION_CODE
+    WHERE POSITION_ID = $1
+    ORDER BY POSITION_ID
   `.trim();
 
   const values = [id];
@@ -57,7 +57,7 @@ export const update = async (positionData: UpdatePositionDto, id: number) => {
   const query = `
     UPDATE DELTHA.POSITIONS
     SET ${setColumns}
-    WHERE POSITION_CODE = $${keys.length + 1}
+    WHERE POSITION_ID = $${keys.length + 1}
     RETURNING *;
   `.trim();
 
@@ -72,7 +72,7 @@ export const remove = async (id: number) => {
   const query = `
     DELETE
     FROM DELTHA.POSITIONS
-    WHERE POSITION_CODE = $1
+    WHERE POSITION_ID = $1
   `.trim();
 
   const values = [id];

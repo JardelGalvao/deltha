@@ -27,7 +27,7 @@ export const findEmployee = async (id: number) => {
 };
 
 export const createEmployee = async (employeeData: CreateEmployeeDto) => {
-  const { national_id, municipality_code, department_code, position_code } = employeeData;
+  const { national_id, municipality_id, department_id, position_id } = employeeData;
 
   if(!validTaxId(national_id)){
     throw new HttpError("Invalid national_id.", 422);
@@ -39,9 +39,9 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
     throw new HttpError('There is already a employee registered with this national id.', 409);
   };
 
-  // Verify if the municipality_code is valid
-  if (municipality_code) {
-    const municipality = await municipalities.findById(municipality_code);
+  // Verify if the municipality_id is valid
+  if (municipality_id) {
+    const municipality = await municipalities.findById(municipality_id);
     if (municipality.length === 0) {
       throw new HttpError(`Municipality not found.`, 404);
     };
@@ -53,10 +53,10 @@ export const createEmployee = async (employeeData: CreateEmployeeDto) => {
 };
 
 export const updateEmployee = async (employeeData: UpdateEmployeeDto, id: number) => {
-  const { company_code } = employeeData;
+  const { company_id } = employeeData;
 
-  if (company_code) {
-    const company = await companyRepository.findById(company_code);
+  if (company_id) {
+    const company = await companyRepository.findById(company_id);
 
     if (company.length === 0) {
       throw new HttpError("Company not found.", 404);

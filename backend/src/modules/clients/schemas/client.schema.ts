@@ -1,139 +1,92 @@
 import { z } from "zod";
 
-// Constants
-const TAX_ID_TYPES = {
-  CNPJ: 1,
-  CPF: 2,
-} as const;
-
-const TAX_ID_LENGTHS = {
-  [TAX_ID_TYPES.CNPJ]: 14,
-  [TAX_ID_TYPES.CPF]: 11,
-} as const;
-
-const VALIDATION_MESSAGES = {
-  taxIdType: 'The Tax ID type must be 1 (CNPJ) or 2 (CPF)',
-  taxIdLength: 'Invalid tax ID length for the provided type',
-  corporateName: 'Corporate name is required',
-  email: 'Invalid email format',
-  areaCode: 'Phone area code must be 3 characters',
-} as const;
-
-const MAX_LENGTHS = {
-  corporateName: 100,
-  name: 100,
-  address: 40,
-  addressNumber: 999999,
-  addressComplement: 30,
-  postalCode: 8,
-  neighborhood: 60,
-  phone: 14,
-} as const;
-
-// Validation helpers
-const validateTaxId = (taxIdType: number, taxId: string): boolean => {
-  const expectedLength = TAX_ID_LENGTHS[taxIdType as keyof typeof TAX_ID_LENGTHS];
-  return expectedLength !== undefined && taxId.length === expectedLength;
+const validateTaxId = (taxIdType: string, taxId: string): boolean => {
+  return (taxIdType === '1' && taxId.length === 14) || (taxIdType === '2' && taxId.length === 11); 
 };
-
-// Reusable field schemas
-const taxIdTypeSchema = z
-  .number()
-  .int()
-  .refine((val) => val === TAX_ID_TYPES.CNPJ || val === TAX_ID_TYPES.CPF, {
-    message: VALIDATION_MESSAGES.taxIdType,
-  });
-
-const taxIdSchema = z
-.string()
-.trim();
-
-const emailSchema = z
-  .string()
-  .trim()
-  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, VALIDATION_MESSAGES.email)
-  .optional();
-
-const areaCodeSchema = z
-  .string()
-  .trim()
-  .length(3, VALIDATION_MESSAGES.areaCode)
-  .optional();
 
 // Base company schema
 const clientBaseSchema = z
   .object({
-    tax_id_type: taxIdTypeSchema,
-    tax_id: taxIdSchema,
-    corporate_name: z
-      .string({ message: VALIDATION_MESSAGES.corporateName })
+    client_id: z
+      .number(),
+    tax_id_type: z
+      .enum(['1', '2']),
+    tax_id: z
+      .string()
       .trim()
-      .max(MAX_LENGTHS.corporateName, `Corporate name must be at most ${MAX_LENGTHS.corporateName} characters`),
+      .transform((val) => val.replace(/\D/g, '')),
+    corporate_name: z
+      .string({ message: "Corporate name is required." })
+      .trim()
+      .max(100, "Corporate name cannot exceed 100 characters."),
     name: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.name, `Name must be at most ${MAX_LENGTHS.name} characters`)
+      .max(100, "Name cannot exceed 100 characters.")
       .optional(),
     address: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.address, `Address must be at most ${MAX_LENGTHS.address} characters`)
+      .max(40, "Address cannot exceed 40 characters.")
       .optional(),
     address_number: z
-      .number()
-      .min(1)
-      .max(MAX_LENGTHS.addressNumber, `Address number must be at most ${MAX_LENGTHS.addressNumber}`)
+      .string()
+      .min(1, "Name must be at least 1 character long.")
+      .max(6, "Address cannot exceed 6 characters.")
       .optional(),
     address_complement: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.addressComplement, `Address complement must be at most ${MAX_LENGTHS.addressComplement} characters`)
+      .max(30, "Address complement cannot exceed 30 characters.")
       .optional(),
     postal_code: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.postalCode, `Postal code must be at most ${MAX_LENGTHS.postalCode} characters`)
+      .max(8, "Postal code cannot exceed 8 characters.")
       .optional(),
     neighborhood: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.neighborhood, `Neighborhood must be at most ${MAX_LENGTHS.neighborhood} characters`)
+      .max(60, "Neighborhood cannot exceed 60 characters.")
       .optional(),
-    municipality_ide: z
-    .number()
-    .optional(),
-    area_code: areaCodeSchema,
-    phone: z
+    municipality_id: z
+      .number()
+      .optional(),
+    area_code: z
       .string()
       .trim()
-      .max(MAX_LENGTHS.phone, `Phone must be at most ${MAX_LENGTHS.phone} characters`)
+      .length(3, "Area code cannot exceed 3 characters.")
       .optional(),
-    email: emailSchema,
+    phone: z
+      .preprocess((number: string) => {
+        return number.trim().replace(/\D/g, '')
+      }, z.string()
+          .min(8, "Phone number must be at least 1 character long.")
+          .max(9, "Phone number cannot exceed 9 characters."))
+      .optional(),
+    email: z
+      .email()
+      .optional(),
+    is_active: z
+      .boolean()
+      .optional()
+      .default(true),
     created_at: z.date(),
     updated_at: z.date(),
   });
 
-export const clientSchema = z
-  .object({
-    client_ide: z
-    .number(),
-  })
-  .extend(clientBaseSchema.shape);
-
 // For creating a new client
-export const clientCreateSchema = clientSchema
+export const clientCreateSchema = clientBaseSchema
   .strict()
   .omit({
     client_id: true,
     created_at: true,
     updated_at: true,
   })
-  .extend({
-    is_active: z.boolean().optional().default(true),
-  }).refine(
+  .refine(
     (data) => validateTaxId(data.tax_id_type, data.tax_id),
     {
-      message: VALIDATION_MESSAGES.taxIdLength,
+      message: "Invalid tax ID length for the provided type",
       path: ['tax_id'],
     }
   );
@@ -148,7 +101,6 @@ export const clientUpdateSchema = clientBaseSchema
   });
 
 // Type inference
-export type Client = z.infer<typeof clientSchema>;
+export type Client = z.infer<typeof clientBaseSchema>;
 export type CreateClientDto = z.infer<typeof clientCreateSchema>;
 export type UpdateClientDto = z.infer<typeof clientUpdateSchema>;
-

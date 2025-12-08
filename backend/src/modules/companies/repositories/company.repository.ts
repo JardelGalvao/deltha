@@ -66,10 +66,6 @@ export const update = async (companyData: CompanyUpdateDto, id: number) => {
   const fields = Object.keys(companyData);
   let values = Object.values(companyData);
 
-  if (fields.length === 0) {
-    throw new Error("No fields to update");
-  };
-
   const setClauses = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
   const setIdClause = `$${fields.length + 1}`;
 

@@ -5,7 +5,7 @@ export const positionBaseSchema = z.object({
     .number()
     .int()
     .positive(),
-  cleint_id: z
+  client_id: z
     .number()
     .int()
     .positive(),

@@ -9,10 +9,14 @@ export const clientUserBaseSchema = z.object({
     .number()  
     .int()  
     .positive(),  
-  name: z  
+  first_name: z  
     .string()  
     .min(1)  
-    .max(255),  
+    .max(100, "First name must be at most 100 characters."),  
+  last_name: z  
+    .string()  
+    .min(1)  
+    .max(100, "First name must be at most 100 characters."),  
   email: z  
     .string()  
     .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format')  
@@ -37,10 +41,6 @@ export const clientUserCreateSchema = clientUserBaseSchema
     client_user_id: true,  
     created_at: true,  
     updated_at: true,  
-  })  
-  .extend({  
-    is_active: z.boolean().optional().default(true),  
-    password: clientUserBaseSchema.shape.password,  
   });
   
 // For updating a client user (all fields optional except client_user_id)  
@@ -50,9 +50,6 @@ export const clientUserUpdateSchema = clientUserBaseSchema
     client_user_id: true,  
     created_at: true,  
     updated_at: true,  
-  })  
-  .extend({  
-    password: clientUserBaseSchema.shape.password.optional(),  
   });
   
 // Type inference  

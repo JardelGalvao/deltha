@@ -26,17 +26,17 @@ export const findPosition = async (id: number) => {
 };
 
 export const createPosition = async (positionData: CreatePositionDto) => {
-  const { company_code, department_code } = positionData;
+  const { company_id, department_id } = positionData;
 
-  if (company_code && company_code > 0) {
-    const company = await companyRepository.findById(company_code);
+  if (company_id && company_id > 0) {
+    const company = await companyRepository.findById(company_id);
     if (company.length === 0) {
       throw new HttpError("Company not found.", 404);
     }
   }
 
-  if (department_code && department_code > 0) {
-    const department = await departmentRepository.findById(department_code);
+  if (department_id && department_id > 0) {
+    const department = await departmentRepository.findById(department_id);
     if (department.length === 0) {
       throw new HttpError("Department not found.", 404);
     }
@@ -55,16 +55,16 @@ export const updatePosition = async (positionData: UpdatePositionDto, id: number
     throw new HttpError("Position not found.", 404);
   }
 
-  const { company_code, department_code } = positionData;
+  const { company_id, department_id } = positionData;
 
-  if (company_code && company_code > 0) {
-    const company = await companyRepository.findById(company_code);
+  if (company_id && company_id > 0) {
+    const company = await companyRepository.findById(company_id);
     if (company.length === 0) {
       throw new HttpError("Company not found.", 404);
     }
   }
 
-  if (department_code && department_code > 0) {
+  if (department_id && department_id > 0) {
     const department = await departmentRepository.findById(1);
     if (department.length === 0) {
       throw new HttpError("Department not found.", 404);

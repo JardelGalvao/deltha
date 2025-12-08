@@ -6,7 +6,7 @@ export const findAll = async (pageSize: number, offset: number) => {
   const query = `
     SELECT *
     FROM DELTHA.CLIENT_USERS
-    ORDER BY CLIENT_USER_CODE LIMIT $1 OFFSET $2;
+    ORDER BY CLIENT_USER_ID LIMIT $1 OFFSET $2;
     `.trim();
 
   const values = [pageSize, offset];
